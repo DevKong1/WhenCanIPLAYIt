@@ -4,7 +4,7 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
@@ -19,6 +19,12 @@ Vue.use(VueRouter)
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
+  },
+  {
+    path: '/api/queryservice',
+    name: 'QueryService',
+    component: require('../components/IGDBService/QueryService.js'),
+    props: true
   }
 ]
 

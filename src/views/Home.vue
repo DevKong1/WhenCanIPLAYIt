@@ -7,7 +7,7 @@
 
 <script>
 import axios from 'axios'
-import Games from '../components/Games'
+import Games from './Games'
 
 export default {
   name: 'Home',

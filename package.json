@@ -1,6 +1,7 @@
 {
   "name": "whencaniplayit",
   "version": "0.1.0",
+  "main": "main.js",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,12 +10,16 @@
   "dependencies": {
     "apicalypse": "^0.1.6",
     "axios": "^0.20.0",
+    "cors": "^2.8.5",
     "cors-anywhere": "^0.4.3",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.4",
     "proxy-from-env": "^1.1.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "vue-template-compiler": "^2.6.11"
