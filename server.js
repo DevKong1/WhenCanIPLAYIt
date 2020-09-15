@@ -6,7 +6,7 @@ var port = process.env.PORT || 3000;
 var cors_proxy = require('cors-anywhere');
 cors_proxy.createServer({
     originWhitelist: [], // Allow all origins
-	setHeaders: {"user-key": "6d6abd2e31b332f1513d652e366fcb72"},
+	setHeaders: {"user-key": "8b52d6947ece24b07257a743ea324d89"},
 }).listen(port, host, function() {
     console.log('Running CORS Anywhere on ' + host + ':' + port);
 });

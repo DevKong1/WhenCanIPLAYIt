@@ -21,7 +21,7 @@ function parseQuery(parsed) {
     return query;
 }
 
-async function downloadAllData(url, data, handleDataCallback) {
+async function downloadAllData(url, data, handleDataCallback, callbackParam = null) {
     var parsed = querystring.parse(data);
     var basicQuery = parseQuery(parsed);
 
@@ -35,7 +35,8 @@ async function downloadAllData(url, data, handleDataCallback) {
             var page = await browser.newPage();
             await page.setRequestInterception(true);
 
-            const query = basicQuery + "limit " + limit + "; offset " + (limit * i) + ";";
+            //const query = basicQuery + "limit " + limit + "; offset " + (limit * i) + ";";
+            const query = basicQuery + "limit 1; offset " + (limit * i) + ";";
             page.on('request', interceptedRequest => {
                 var data = {
                     'method': 'POST',
@@ -55,28 +56,17 @@ async function downloadAllData(url, data, handleDataCallback) {
                 break;
             }
 
-            handleDataCallback(result);
+            if(callbackParam != null) {
+                handleDataCallback(callbackParam, result);
+            } else {
+                handleDataCallback(result);
+            }
         }
     } catch (err) {
-        console.error(err.message);
+        console.error("PUPPETEER: " + err.message);
     } finally {
         await browser.close();
     }
 };
 
-function downloadSingleResult(request, url, data, callback) {
-    var parsedURL = proxyURL + url;
-    var parsed = querystring.parse(data);
-    var query = parseQuery(parsed);
-
-    axios({
-        method: 'post',
-        url: parsedURL,
-        data: query
-        })
-        .then(response => callback(request, (response.data)))
-        .catch(err => console.error(err));
-}
-
 exports.downloadAllData = downloadAllData;
-exports.downloadSingleResult = downloadSingleResult;
