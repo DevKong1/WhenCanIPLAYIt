@@ -1,5 +1,4 @@
 const puppeteer = require("puppeteer");
-const axios = require("axios");
 const querystring = require("querystring")
 
 //TODO Those ad Env variables

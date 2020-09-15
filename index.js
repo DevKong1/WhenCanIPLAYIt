@@ -4,8 +4,6 @@ var dotenv = require("dotenv");
 var path = require("path");
 var cors = require("cors");
 var mongoose = require("mongoose")
-var axios = require("axios")
-var axiosRetry = require("axios-retry")
 
 //Custom Imports
 var IGDBService = require("./src/components/IGDBService/IGDBController.js")
@@ -19,15 +17,6 @@ var dbname = "WhenCanIPLAYIt"
 dotenv.config();
 mongoose.connect('mongodb+srv://admin:' + psw + '@whencaniplayit.zqk4c.mongodb.net/' + dbname + '?retryWrites=true&w=majority', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true  });
 global.appRoot = path.resolve(__dirname);
-axiosRetry(axios, {
-  retries: 10,
-  retryCondition: error => {
-    return error.response.status == 429 || error.response.status == 404; //when downloading many files those 2 errors might get thrown (404 ???)
-  }, 
-  retryDelay: (retryCount) => {
-    return (retryCount * 500) + 6000;
-  }
-});
 
 app.use(cors())
 

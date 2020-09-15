@@ -1,5 +1,4 @@
 var mongoose = require("mongoose");
-const { release } = require("os");
 var querystring = require("querystring")
 var downloader = require("./IGDBDataDownloader.js")
 Release_Dates = require("../../models/release_dates_Model.js")(mongoose);
