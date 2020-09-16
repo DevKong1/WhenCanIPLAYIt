@@ -5,5 +5,5 @@ module.exports = function(mongoose) {
         icon: String,
         code: String
     });
-    return mongoose.model('plarform_model', platform_schema, 'platforms');
+    return mongoose.model('platform_model', platform_schema, 'platforms');
 };
