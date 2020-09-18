@@ -1,5 +1,7 @@
 const puppeteer = require("puppeteer");
 const querystring = require("querystring")
+const fspath = require('fs-path')
+const fetch = require("node-fetch");
 
 //TODO Those ad Env variables
 const proxyURL = "http://localhost:3000/";
@@ -67,6 +69,21 @@ async function downloadAllData(url, data, handleDataCallback = null, callbackPar
     }
 };
 
+async function downloadImage(url, path, callback) {
+    const fetch_retry = async (url, n = 5) => {
+        try {
+            return await fetch(url)
+        } catch(err) {
+            if (n === 1) throw err;
+            return await fetch_retry(url, n - 1);
+        }
+    };
+    
+	const response = await fetch_retry(url);
+	const buffer = await response.buffer();
+	fspath.writeFile(path, buffer, callback);
+}
+
 function parseQuery(parsed) {
     let query = "";
 
@@ -82,3 +99,4 @@ function parseQuery(parsed) {
 };
 
 exports.downloadAllData = downloadAllData;
+exports.downloadImage = downloadImage;

@@ -11,8 +11,7 @@ async function checkAndUpdateDB () {
         querystring.stringify({
             fields: "fields *;",
             where: "where date >= " + time + ";",
-            sort: "sort date asc;",
-            limit: "limit 5;"
+            sort: "sort date asc;"
         }),
         handler.handle_releasedatesJSON
     ); 
