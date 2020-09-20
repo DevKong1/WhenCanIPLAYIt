@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
-const querystring = require("querystring")
-const downloader = require("./IGDBDataDownloader.js")
-const path = require("path")
+const querystring = require("querystring");
+const downloader = require("./IGDBDataDownloader.js");
+const path = require("path");
+const tools = require("../../utils/tools.js");    
 Release_Dates = require("../../models/release_dates_Model.js")(mongoose);
 Games = require("../../models/games_Model.js")(mongoose);
 Platforms = require("../../models/platforms_Model.js")(mongoose);
@@ -25,7 +26,8 @@ const regions = [
     'japan',
     'china',
     'asia',
-    'worldwide'
+	'worldwide',
+	'undefined'
 ];
 
 async function addGames(release_dates, data) {
@@ -36,66 +38,78 @@ async function addGames(release_dates, data) {
 	//Check if we got all the data in the DB
 
 	//Game cover
-	let coverSet = [...new Set(data.filter(el => el.cover != null).map(el => el.cover))];
-	let covers = await getSpecificData("https://api-v3.igdb.com/covers", "fields url;", coverSet);
-	covers.forEach(el => {
-		el.url = el.url.replace("thumb", "cover_big");
-	});
+	let coverSet = [...new Set(data.filter(el => el.cover != null && el.cover != undefined).map(el => el.cover))];
+	let covers = [];
+	if(coverSet.length > 0) {
+		covers = await getSpecificData("https://api-v3.igdb.com/covers", "fields url;", coverSet);
+		covers.forEach(el => {
+			el.url = el.url.replace("thumb", "cover_big");
+		});
+	}
 
 	//Game genres
 	let genresSet = [...new Set((data.filter(el => el.genres != null).map(el => el.genres)).flat(1))];
-	let genres = await Genres.find(({code: {$in: genresSet} }), function(err, response) {
-		if(err) {
-			console.log(err);
-		} else {
-			return response;
-		}
-	});
+	let genres = [];
+	if(genresSet.length > 0) {
+		genres = await Genres.find(({code: {$in: genresSet} }), function(err, response) {
+			if(err) {
+				console.log(err);
+			} else {
+				return response;
+			}
+		});
 
-	if(genresSet.length != genres.length) {
-		let newGenres = genresSet.filter(el => !genres.map(el => el.code).includes(el.toString()));
-		console.log("Downloading new genres: " + newGenres);
-		let newGenresData = await getSpecificData("https://api-v3.igdb.com/genres", "fields name;", newGenres);
+		if(genresSet.length != genres.length) {
+			let newGenres = genresSet.filter(el => !genres.map(el => el.code).includes(el.toString()));
+			console.log("Downloading new genres: " + newGenres);
+			let newGenresData = await getSpecificData("https://api-v3.igdb.com/genres", "fields name;", newGenres);
 
-		for(i in newGenresData){
-			let saved = await saveToDB(Genres, {
-				name: newGenresData[i].name,
-				code: newGenresData[i].id
-			});
-			genres.push({ id: saved.id, name: saved.name, code: saved.code});
+			for(i in newGenresData){
+				let saved = await saveToDB(Genres, {
+					name: newGenresData[i].name,
+					code: newGenresData[i].id
+				});
+				genres.push({ id: saved.id, name: saved.name, code: saved.code});
+			}
 		}
 	}
 
 	//Game platforms
 	let platformsSet = [...new Set((data.filter(el => el.platforms != null).map(el => el.platforms)).flat(1))];
-	let platforms = await Platforms.find(({code: {$in: platformsSet} }), function(err, response) {
-		if(err) {
-			console.log(err);
-		} else {
-			return response;
-		}
-	});
+	let platforms = [];
+	if(platformsSet.length > 0) {
+		platforms = await Platforms.find(({code: {$in: platformsSet} }), function(err, response) {
+			if(err) {
+				console.log(err);
+			} else {
+				return response;
+			}
+		});
 
-	if(platformsSet.length != platforms.length) {
-		let newPlatforms = platformsSet.filter(el => !platforms.map(el => el.code).includes(el.toString()));
-		console.log("Downloading new platforms: " + newPlatforms);
-		let newPlatformsData = await getSpecificData("https://api-v3.igdb.com/platforms", "fields name;", newPlatforms);
+		if(platformsSet.length != platforms.length) {
+			let newPlatforms = platformsSet.filter(el => !platforms.map(el => el.code).includes(el.toString()));
+			console.log("Downloading new platforms: " + newPlatforms);
+			let newPlatformsData = await getSpecificData("https://api-v3.igdb.com/platforms", "fields name;", newPlatforms);
 
-		for(i in newPlatformsData){
-			let saved = await saveToDB(Platforms, {
-				name: newPlatformsData[i].name,
-				code: newPlatformsData[i].id
-			});
-			platforms.push({ id: saved.id, name: saved.name, code: saved.code});
+			for(i in newPlatformsData){
+				let saved = await saveToDB(Platforms, {
+					name: newPlatformsData[i].name,
+					code: newPlatformsData[i].id
+				});
+				platforms.push({ id: saved.id, name: saved.name, code: saved.code});
+			}
 		}
 	}
 
 	//Game Screenshots
 	let screenSet = [...new Set((data.filter(el => el.screenshots != undefined && el.screenshots.length > 0).map(el => el.screenshots)).flat(1))];
-	let screenshots = await getSpecificData("https://api-v3.igdb.com/screenshots", "fields url;", screenSet);
-	screenshots.forEach(el => {
-		el.url = el.url.replace("thumb", "screenshot_big");
-	});
+	let screenshots = [];
+	if(screenSet.length > 0) {
+		screenshots = await getSpecificData("https://api-v3.igdb.com/screenshots", "fields url;", screenSet);
+		screenshots.forEach(el => {
+			el.url = el.url.replace("thumb", "screenshot_big");
+		});
+	}
 
 	//Save each game
  	for(i in data) {
@@ -160,6 +174,7 @@ async function addGames(release_dates, data) {
 				human: consideredDate.human,
 				m: consideredDate.m,
 				y: consideredDate.y,
+				dateAdded: tools.dateToSeconds(Date.now()),
 				platform: element_Platforms.find(el => el.code == consideredDate.platform).id,
 				region: regions[consideredDate.region-1]
 			});
@@ -190,10 +205,10 @@ exports.handle_releasedatesJSON = async function(data) {
 				let resultCodes = result.map(el => el.code);
 				let newGames = data.filter(el => !resultCodes.includes(el.game.toString()));
 
-				//Download all games for which we have no data
-				console.log("Downloading new games:\n" + [...new Set(newGames.map(el => el.game))]);
 				if(newGames.length > 0) {
-					downloader.downloadAllData("https://api-v3.igdb.com/games", 
+					//Download all games for which we have no data
+					console.log("Downloading new games:\n" + [...new Set(newGames.map(el => el.game))]);
+					await downloader.downloadAllData("https://api-v3.igdb.com/games", 
 						querystring.stringify({
 							fields: "fields *;",
 							where: "where id = (" + [...new Set(newGames.map(el => el.game))] + ");",
@@ -239,6 +254,7 @@ exports.handle_releasedatesJSON = async function(data) {
 						m: datesToCheck[date].m,
 						y: datesToCheck[date].y,
 						platform: thisPlatform.id,
+						dateAdded: tools.dateToSeconds(Date.now()),
 						region: thisRegion
 						});
 						let updatedGame = await Games.findByIdAndUpdate(thisGame.id, {

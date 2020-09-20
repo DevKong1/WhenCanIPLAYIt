@@ -1,12 +1,13 @@
-var express = require('express');
-var app = express();
-var dotenv = require("dotenv");
-var path = require("path");
-var cors = require("cors");
-var mongoose = require("mongoose")
+const express = require('express');
+const app = express();
+const dotenv = require("dotenv");
+const path = require("path");
+const cors = require("cors");
+const mongoose = require("mongoose")
 
 //Custom Imports
-var IGDBService = require("./src/components/IGDBService/IGDBController.js")
+const IGDBService = require("./src/components/IGDBService/IGDBController.js")
+const ProxyServer = require("./server.js")
 
 //TODO ENV
 var PORT = 3030;
@@ -18,12 +19,14 @@ dotenv.config();
 mongoose.connect('mongodb+srv://admin:' + psw + '@whencaniplayit.zqk4c.mongodb.net/' + dbname + '?retryWrites=true&w=majority', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true  });
 global.appRoot = path.resolve(__dirname);
 
-app.use(cors())
+app.use(cors());
+ProxyServer.startProxy();
 
-var routes = require('./src/components/routes');
+var routes = require('./src/components/APIService/routes.js');
 routes(app);
 
-IGDBService.checkAndUpdateDB();
+//TODO other cron-job which deletes all games released over a month ago
+IGDBService.checkAndUpdateDB("*/30 * * * *");
 
 app.listen(PORT, function () {
   console.log('Node API server started on port '+ PORT);

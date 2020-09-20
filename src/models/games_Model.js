@@ -5,14 +5,14 @@ module.exports = function(mongoose) {
         aggregated_rating_count: Number,
         category: String,
         cover: {type: String, default: "none"},
-        genres: [Schema.ObjectId],
-        name: String,
-        platforms: [Schema.ObjectId],
-        release_dates: [Schema.ObjectId],
+        genres: [{type: Schema.ObjectId, ref: 'genres_model'}],
+        name: {type: String, required: true},
+        platforms: [{type: Schema.ObjectId, ref: 'platform_model'}],
+        release_dates: [{type: Schema.ObjectId, ref: 'release_date_model'}],
         screenshots: [String],
         time_to_beat: Number,
         summary: String,
-        code: String
+        code: {type: String, required: true, dropDups: true}
 
     });
     return mongoose.model('games_model', game_schema, 'games');

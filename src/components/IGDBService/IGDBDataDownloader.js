@@ -1,6 +1,6 @@
 const puppeteer = require("puppeteer");
-const querystring = require("querystring")
-const fspath = require('fs-path')
+const querystring = require("querystring");
+const fspath = require('fs-path');
 const fetch = require("node-fetch");
 
 //TODO Those ad Env variables
@@ -22,6 +22,7 @@ async function downloadAllData(url, data, handleDataCallback = null, callbackPar
         for(let i = 0; i < Math.ceil(maxoffset/limit); i++) {
             let page = await browser.newPage();
             await page.setRequestInterception(true);
+            await page.setDefaultNavigationTimeout(0); 
 
             let query;
             if(basicQuery.includes("limit")) {
@@ -62,6 +63,7 @@ async function downloadAllData(url, data, handleDataCallback = null, callbackPar
         } else {
             return allResults;
         }
+        return;
     } catch (err) {
         console.error("PUPPETEER: " + err.message);
     } finally {
