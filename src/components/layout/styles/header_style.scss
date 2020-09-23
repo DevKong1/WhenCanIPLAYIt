@@ -1,0 +1,38 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+
+.header {
+    top: 0;
+    z-index: 9;
+    width: 100%;
+    height: $header_height;
+    background: $uiColor;
+    position: fixed;
+}
+
+#rowheader {
+    width: 100%;
+    margin: 0;
+    position: relative;
+}   
+
+.content-header-bottom {
+    border-left: 65px solid transparent;
+    border-right: 65px solid transparent;
+    border-top: 36.6px solid #101012;
+    filter: drop-shadow(0 2px 4px rgba(22,22,24,.25));
+    position: absolute;
+    top: 50px;
+    z-index: -1;
+    right: calc(50% - 65px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo img{
+    @include hoverTransition;
+    height: 66px;
+}
+.logo img:hover {
+    @include onHover;
+}

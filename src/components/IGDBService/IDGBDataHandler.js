@@ -35,6 +35,7 @@ async function addGames(release_dates, data) {
 		console.log("Empty IGDB response...");
 		return;
 	}
+	
 	//Check if we got all the data in the DB
 
 	//Game cover

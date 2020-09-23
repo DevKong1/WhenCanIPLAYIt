@@ -1,0 +1,17 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+
+footer {
+    clear: both;
+    position: relative;
+    min-height: 7%;
+    height: 7%;
+    margin-top: auto; 
+    background-color: $uiColor;
+    
+    .copyright-text {
+        @include center;
+        min-width: 60%;
+        font-size: 90%;
+    }
+}

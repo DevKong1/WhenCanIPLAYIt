@@ -1,0 +1,80 @@
+@mixin hoverTransition {
+    transition: opacity .5s ease;
+    background-color: transparent !important;
+}
+
+@mixin onHover {
+    opacity: 0.7;
+}
+
+@mixin center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+@mixin game-box {
+    border-radius: 3px;
+    width: 100%;
+    background-color: #161618;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
+
+    .image-box {
+        @include hoverTransition();
+        width: 100%;
+        :hover {
+            @include onHover();
+        }
+
+        img {
+            vertical-align: middle;
+            border: 0;
+            transition: opacity 1s;
+            opacity: 1;
+            height: 100%;
+            position: relative;
+            width: 100%;
+            border-radius: 3px 3px 0 0;
+        }
+    }
+
+    .title-box {
+        padding: 7px 8px 8px 10px;
+        display: inline-block;
+
+        .main-title {
+            display: block;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+
+            a {
+                @include hoverTransition();
+
+                :hover {
+                    color: #e8e5e0;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        .sub-title {
+            display: block;
+            font-size: 12px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            color: #999;
+        }
+    }
+
+    .follow-box {
+        float: right;
+        padding-right: 10px;
+        padding-top: 14px;
+        cursor: pointer;
+    }
+}

@@ -14,7 +14,7 @@ exports.releases = function(req, res) {
             $lt: req.query.to
         };
     }
-    if(req.query.recentDates == true) {
+    if(req.query.recentlyAdded == true) {
         let now = new Date(Date.now());
         let nowSeconds = tools.dateToSeconds(now);
         let time = tools.dateToSeconds(now.setDate(now.getDate() - 7));
@@ -40,9 +40,10 @@ exports.releases = function(req, res) {
     }
 
     Release_Dates.find(query)
-    .populate("game", "name")
+    .populate("game")
     .populate("platform", "name")
     .sort(req.query.sort != null ? req.query.sort : "date")
+    .limit(req.query.limit != null ? Number(req.query.limit) : 0)
     .exec(function(err, dates) {
         if(err || dates == null) {
             res.send("Error");

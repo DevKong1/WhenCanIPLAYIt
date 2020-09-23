@@ -1,0 +1,21 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+
+#home {
+    margin-top: $header_height;
+    padding-top: 40px;  
+
+    .jumbotron {
+        background-color: $bgColor;
+    }
+
+    .game-box {
+        @include game-box();
+    }
+
+    .background-image {
+        background-image: "D:\hax\Magistrale\Applicazioni e servizi Web\Progetto\whencaniplayit\src\assets\default_cover.jpg";
+        background-size: 100%;
+        border-radius: 3px 3px 0px 0px;
+    }
+}
