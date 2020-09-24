@@ -4,7 +4,7 @@ module.exports = function(mongoose) {
         aggregated_rating: Number,
         aggregated_rating_count: Number,
         category: String,
-        cover: {type: String, default: "D:\hax\Magistrale\Applicazioni e servizi Web\Progetto\whencaniplayit\src\assets\default_cover.jpg"},
+        cover: {type: String, default: "default_cover.jpg"},
         genres: [{type: Schema.ObjectId, ref: 'genres_model'}],
         name: {type: String, required: true},
         platforms: [{type: Schema.ObjectId, ref: 'platform_model'}],

@@ -7,48 +7,60 @@
     opacity: 0.7;
 }
 
-@mixin center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
-
 @mixin game-box {
     border-radius: 3px;
-    width: 100%;
+    padding:0;
+    margin-left: 10px;
+    margin-right: 10px;
     background-color: #161618;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
 
     .image-box {
         @include hoverTransition();
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
         width: 100%;
         :hover {
             @include onHover();
         }
 
         img {
+            object-fit: cover;
             vertical-align: middle;
             border: 0;
             transition: opacity 1s;
             opacity: 1;
             height: 100%;
-            position: relative;
             width: 100%;
+            position: relative;
             border-radius: 3px 3px 0 0;
         }
+    }
+
+    .red-bar {
+        background-color: #da1106;
+        height: 4px;
+        width: 100%;
+    }
+
+    .green-bar {
+        background-color: #00ff15;
+        height: 4px;
+        width: 100%;
     }
 
     .title-box {
         padding: 7px 8px 8px 10px;
         display: inline-block;
+        width: calc(100% - 40px);
 
         .main-title {
             display: block;
             white-space: nowrap;
             text-overflow: ellipsis;
+            font-size: 16px;
+            font-size: 0.9vw;
             overflow: hidden;
 
             a {

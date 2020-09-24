@@ -41,7 +41,7 @@ async function downloadAllData(url, data, handleDataCallback = null, callbackPar
             });
 
             await page.goto(proxyURL + url);
-            let result = await page.evaluate(() =>  {    
+            let result = await page.evaluate(() =>  {   
                 return JSON.parse(document.querySelector("body").innerText);   
             }); 
             

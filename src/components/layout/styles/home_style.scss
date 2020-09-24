@@ -3,10 +3,24 @@
 
 #home {
     margin-top: $header_height;
-    padding-top: 40px;  
+    padding-top: 40px;
+    
+    h5 {
+        font-weight: 700;
+        font-size: 20px;
+        color: #e8e0e0;
+    }
+
+    /* .game-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 250px) 24%;
+        grid-gap: 0%;
+        grid-auto-flow: column;
+    } */
 
     .jumbotron {
         background-color: $bgColor;
+        padding: 2rem 1rem;
     }
 
     .game-box {
@@ -18,4 +32,11 @@
         background-size: 100%;
         border-radius: 3px 3px 0px 0px;
     }
+
+    .divider {
+        margin-top: 10px;
+        border-bottom: 1px solid #494a4f;
+        margin-bottom: 1.5%;
+    }
+
 }

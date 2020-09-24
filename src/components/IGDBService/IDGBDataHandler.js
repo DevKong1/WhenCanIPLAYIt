@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const querystring = require("querystring");
 const downloader = require("./IGDBDataDownloader.js");
-const path = require("path");
-const tools = require("../../utils/tools.js");    
+const path = require("path");  
+const moment = require('moment');
+
 Release_Dates = require("../../models/release_dates_Model.js")(mongoose);
 Games = require("../../models/games_Model.js")(mongoose);
 Platforms = require("../../models/platforms_Model.js")(mongoose);
@@ -43,6 +44,12 @@ async function addGames(release_dates, data) {
 	let covers = [];
 	if(coverSet.length > 0) {
 		covers = await getSpecificData("https://api-v3.igdb.com/covers", "fields url;", coverSet);
+
+		if(covers == null || covers == undefined) {
+			console.log("Error downloading data.");
+			return;
+		}
+
 		covers.forEach(el => {
 			el.url = el.url.replace("thumb", "cover_big");
 		});
@@ -107,6 +114,12 @@ async function addGames(release_dates, data) {
 	let screenshots = [];
 	if(screenSet.length > 0) {
 		screenshots = await getSpecificData("https://api-v3.igdb.com/screenshots", "fields url;", screenSet);
+
+		if(screenshots == null || screenshots == undefined) {
+			console.log("Error downloading data.");
+			return;
+		}
+		
 		screenshots.forEach(el => {
 			el.url = el.url.replace("thumb", "screenshot_big");
 		});
@@ -141,28 +154,30 @@ async function addGames(release_dates, data) {
 		if(coverURL != undefined) {
 			coverURL = coverURL.url;
 			let coverExt = coverURL.split('.');
-			let element_cover = path.join(appRoot + ("/src/assets/cover/" + saved_item.id + "/cover." + coverExt[coverExt.length-1]));
+			let element_cover_base = "cover/" + saved_item.id + "/cover." + coverExt[coverExt.length-1];
+			let element_cover = "public/" + element_cover_base;
 			await downloader.downloadImage("https:" + coverURL, element_cover, (err) => {
 				if(err){
 					console.log("Error downloading: " + err);
 				}
 			});
 			
-			saved_item.cover = element_cover;
+			saved_item.cover = element_cover_base;
 		}
 
 		
 		//This downloads a huge quantity of Data, uncomment if needed
 		for(j in element_Screenshots) {
 			let extensionSS = element_Screenshots[j].split('.');
-			let pathSS = path.join(appRoot + "/src/assets/screenshots/" + saved_item.id + "/" + j + "." + extensionSS[extensionSS.length-1]);
+			let path_base = "screenshots/" + saved_item.id + "/" + j + "." + extensionSS[extensionSS.length-1];
+			let pathSS = "public/" + path_base;
 			downloader.downloadImage("https:" + element_Screenshots[j], pathSS, (err) => {
 				if(err){
 					console.log("Error downloading: " + err);
 				}
 			});
 
-			saved_item.screenshots.push(pathSS.toString()); 
+			saved_item.screenshots.push(path_base.toString()); 
 		} 
 
 		for(release_date in element_release_dates){
@@ -175,7 +190,7 @@ async function addGames(release_dates, data) {
 				human: consideredDate.human,
 				m: consideredDate.m,
 				y: consideredDate.y,
-				dateAdded: tools.dateToSeconds(Date.now()),
+				dateAdded: moment().unix(),
 				platform: element_Platforms.find(el => el.code == consideredDate.platform).id,
 				region: regions[consideredDate.region-1]
 			});
@@ -255,7 +270,7 @@ exports.handle_releasedatesJSON = async function(data) {
 						m: datesToCheck[date].m,
 						y: datesToCheck[date].y,
 						platform: thisPlatform.id,
-						dateAdded: tools.dateToSeconds(Date.now()),
+						dateAdded: moment().unix(),
 						region: thisRegion
 						});
 						let updatedGame = await Games.findByIdAndUpdate(thisGame.id, {

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 
 const state = {
     recentDates: [],   
@@ -10,15 +11,15 @@ const getters = {
 
 const actions = {
     async getRecentDates({ commit }) {
-        let now = new Date(Date.now());
-        let to = getSeconds(now.setDate(now.getDate() + 14));
-        let from = getSeconds(now.setDate(now.getDate() - 7));
+        let to = moment().add(14, 'days').unix();
+        let from = moment().subtract(14, 'days').unix();
         let response = await axios.get("http://localhost:3030/api/releases", {
                 params: {
                     "from": from,
                     "to": to,
-                    "sort": "-date",
-                    "limit": 6
+                    "sort": "date",
+                    "category": 0,
+                    "limit": 10
                 }
             });
         

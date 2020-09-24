@@ -18,6 +18,7 @@ var dbname = "WhenCanIPLAYIt"
 dotenv.config();
 mongoose.connect('mongodb+srv://admin:' + psw + '@whencaniplayit.zqk4c.mongodb.net/' + dbname + '?retryWrites=true&w=majority', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true  });
 global.appRoot = path.resolve(__dirname);
+app.use('/static', express.static(__dirname + '/public'));
 
 app.use(cors());
 ProxyServer.startProxy();
