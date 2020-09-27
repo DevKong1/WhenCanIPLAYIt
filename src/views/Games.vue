@@ -1,44 +1,50 @@
 <template>
-	<div>
-		<div v-bind:key="game.game" v-for="game in games">
-			<h3>{{game}}</h3>
+	<div class="games container">
+		<h5 class="text-left">Games ({{188}})</h5>
+		<div class="divider"></div>
+		<div v-if="loadingMenu">
+			<Spinner />
+		</div>
+		<div v-else>
+			<div class="filters-bar">
+				<multiselect v-model="selectedRelease" open-direction="bottom" :options="releaseLabels" :searchable="false" placeholder="Release Status" :show-labels="false"></multiselect>
+				<multiselect v-model="selectedGenres"  open-direction="bottom" :multiple="true" :options="genres.map(el => el.name)" :searchable="false" :close-on-select="false" placeholder="Genres" :show-labels="false"></multiselect>
+				<multiselect v-model="selectedPlatforms"  open-direction="bottom" :multiple="true" :options="platforms.map(el => el.name)" :searchable="false" :close-on-select="false" placeholder="Platforms" :show-labels="false"></multiselect>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
+import Multiselect from 'vue-multiselect';
+import { mapGetters, mapActions } from 'vuex';
+import Spinner from '../components/layout/Spinner';
+
+import '../components/layout/styles/games_style.scss';
 
 export default {
 	name: 'Games',
+	components: { 
+		Multiselect,
+		Spinner
+	},
 	data() {
 		return {
-			games: []
+			selectedRelease: '',
+			selectedGenres: [],
+			selectedPlatforms: [],
+			releaseLabels: ["Released","Not Released"]
 		}
 	},
-	methods: {		
-		getGames() {
-			const getUrl = "https://api-v3.igdb.com/release_dates";
-			const now = new Date(Date.now())
-			const query = "fields *; where date >= " + this.getSeconds(now.setDate(now.getDate() - 7))+ "; limit 10; sort date asc;";
-			
-			axios.get("http://localhost:3030/api/queryservice", {
-				params: {
-					"url": getUrl,
-					"query": query
-				}
-			})
-			.then(response => {
-				this.games = response.data
-			})
-			.catch(error => (console.log(error)));
-		},
-		init() {
-			this.getGames();
-		}
+	methods: {
+		...mapActions(['getMenuData'])
 	},
-	created() {
-		this.init()
-	}
+	computed: mapGetters(['platforms', 'genres', 'loadingMenu']),
+	mounted() {   
+		this.getMenuData();
+	} 
 }
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

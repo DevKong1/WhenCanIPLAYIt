@@ -4,7 +4,7 @@
 }
 
 @mixin onHover {
-    opacity: 0.7;
+    opacity: 0.65;
 }
 
 @mixin game-box {
@@ -27,8 +27,8 @@
         box-sizing: border-box;
         width: 100%;
         min-height: 200px;
-        :hover {
-            @include onHover();
+        &:hover {
+            @include onHover();           
         }
 
         img {
@@ -71,7 +71,8 @@
             font-size: 16px;
             overflow: hidden;
 
-            :hover {
+            &:hover {
+                @include onHover();
                 color: #e8e5e07e;
             }            
         }
@@ -87,9 +88,15 @@
     }
 
     .follow-box {
+        @include hoverTransition();
+
         float: right;
         padding-right: 10px;
         padding-top: 14px;
         cursor: pointer;
+
+        &:hover {
+            @include onHover();
+        }   
     }
 }

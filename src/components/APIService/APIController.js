@@ -120,7 +120,7 @@ exports.getGame = function(req, res) {
 
 //OTHER
 exports.getPlatforms = function(req, res) {
-    Platforms.find({id: {$in: req.query.platforms}})
+    Platforms.find(req.query.platforms != null ? {id: {$in: req.query.platforms}} : {})
     .exec(function(err, platforms) {
         if(err || platforms == null) {
             res.send("Error");
@@ -130,7 +130,7 @@ exports.getPlatforms = function(req, res) {
     }); 
 };
 exports.getGenres = function(req, res) {
-    Genres.find({id: {$in: req.query.genres}})
+    Genres.find(req.query.genres != null ? {id: {$in: req.query.genres}} : {})
     .exec(function(err, genres) {
         if(err || genres == null) {
             res.send("Error");

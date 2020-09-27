@@ -1,0 +1,79 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+@import "common.scss";
+
+.divider {
+    margin-bottom: 4px !important;
+}
+
+.filters-bar {
+    position: absolute;
+    font-size: 13px;
+    color: #8b9197;
+}
+
+.multiselect {
+    width: 200px !important;
+    float: left;
+
+    .multiselect__content-wrapper {
+        width: unset;
+        min-width: 160px !important;
+        background-color: #535459 !important;
+        border-left: 4px solid rgba(115, 144, 151, 0.15) !important;
+        border-right: 0 !important;
+        border-bottom: 0 !important;
+        a {
+            cursor: pointer;
+            color: #e8e5e0;
+        }
+    }
+
+    .multiselect__select {
+        @include hoverTransition();
+
+        &:hover {
+            @include onHover();
+        }
+    }
+
+    .multiselect__element {
+        color: white !important;
+    }
+
+    .multiselect__option--selected {
+        background: transparent;
+        color: white;
+    }
+
+    .multiselect__tags {
+        @include hoverTransition();
+        background: transparent !important;
+        border: 0 !important;
+
+        .multiselect__placeholder {
+            @include hoverTransition();
+            cursor: pointer;
+            display: inline-flex;
+
+            &:hover {
+                @include onHover();
+            }
+        }
+    }
+
+    .multiselect__single {
+        @include hoverTransition();
+        line-height: 1.5;
+        margin-bottom: 10px;
+        padding-top: 2px;
+        background: transparent;
+        color: #adadad;
+        font-size: 14px;
+        cursor: pointer;
+
+        &:hover {
+            @include onHover();
+        }
+    }
+}

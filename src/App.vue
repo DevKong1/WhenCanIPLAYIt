@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Header />
+    <Jumbotron />
     <router-view/>
     <Footer />
   </div>
@@ -9,12 +10,14 @@
 <script>
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
+import Jumbotron from './components/layout/Jumbotron'
 
 export default {
   name: 'WhenCanIPLAYIt',
   components: {
     Header,
-    Footer
+    Footer,
+    Jumbotron
   }
 }
 </script>

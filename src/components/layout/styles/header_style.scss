@@ -8,31 +8,72 @@
     height: $header_height;
     background: $uiColor;
     position: fixed;
+
+    #rowheader {
+        width: 100%;
+        margin: 0;
+        position: relative;
+    }   
+    
+    #top-brand {
+        position: absolute;
+        left: 50%;
+        margin-left:-76px;
+    }
+
+    .content-header-bottom {
+        border-left: 65px solid transparent;
+        border-right: 65px solid transparent;
+        border-top: 36.6px solid #101012;
+        filter: drop-shadow(0 2px 4px rgba(22,22,24,.25));
+        position: absolute;
+        top: 50px;
+        z-index: -1;
+        right: calc(50% - 65px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .background-image {
+        background: black;
+    }
+
+    .logo img{
+        @include hoverTransition();
+        height: 66px;
+        &:hover {
+            @include onHover();
+        }
+    }
+
+    .nav {
+        font-weight: bold;
+        position: absolute;
+        right: 60%;
+        margin-right: 60px;
+        margin-top: 0;
+
+        li {
+            float: left;
+            position: relative;
+            display: block;
+            list-style-type: none;
+
+            .navbar-link {
+                @include hoverTransition();    
+                color: #e8e5e0;
+                text-decoration: none; 
+                margin-top: 2px;
+                position: relative;
+                display: block;
+                padding: 10px 15px;  
+                
+                &:hover {
+                    @include onHover();
+                    color: #a5a5a5;
+                }
+            }
+        }
+    }
 }
 
-#rowheader {
-    width: 100%;
-    margin: 0;
-    position: relative;
-}   
-
-.content-header-bottom {
-    border-left: 65px solid transparent;
-    border-right: 65px solid transparent;
-    border-top: 36.6px solid #101012;
-    filter: drop-shadow(0 2px 4px rgba(22,22,24,.25));
-    position: absolute;
-    top: 50px;
-    z-index: -1;
-    right: calc(50% - 65px);
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.logo img{
-    @include hoverTransition;
-    height: 66px;
-}
-.logo img:hover {
-    @include onHover;
-}

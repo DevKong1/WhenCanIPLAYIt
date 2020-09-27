@@ -1,36 +1,46 @@
 <template>
   <div id="home">
-    <div class="jumbotron text-center">
-      <div class="container">
-        <h1>When Can You PLAY It?</h1>
-        <div class="md-form pt-4">
-          <form>
-            <input class="form-control" type="text" placeholder="Game title...">
-          </form>
-        </div>
+    <div class="game-slider container">
+      <h5 class="text-left">Recent releases</h5>
+      <div class="divider"></div>
+      <div v-if="loadingStatus">
+        <Spinner />
+      </div>
+      <div v-else>
+        <GameSlider :data="recentReleases" />
       </div>
     </div>
 
-  <GameSlider :title="'Recent releases'" :data="recentReleases" />
-  <GameSlider :title="'Upcoming games'" :data="upcomingReleases" />
-
+    <div class="game-slider container">
+      <h5 class="text-left">Upcoming games</h5>
+      <div class="divider"></div>
+      <div v-if="loadingStatus">
+        <Spinner />
+      </div>
+      <div v-else>
+        <GameSlider :data="upcomingReleases" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import '../components/layout/styles/home_style.scss';
 import GameSlider from '../components/layout/GameSlider';
+import Spinner from '../components/layout/Spinner';
+
+import '../components/layout/styles/home_style.scss';
 
 export default {
   name: 'Home',
   components: {
-  	GameSlider
+    GameSlider,
+    Spinner
   },
   methods: {
     ...mapActions(['getRecentDates'])
   },
-  computed: mapGetters(['recentReleases','upcomingReleases']),
+  computed: mapGetters(['recentReleases','upcomingReleases', 'loadingStatus']),
   mounted() {   
     this.getRecentDates();
   } 

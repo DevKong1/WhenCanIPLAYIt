@@ -1,0 +1,8 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+
+.jumbotron {
+    margin-top: $header_height;
+    margin-bottom: 0 !important;
+    background-color: $bgColor !important;
+}
