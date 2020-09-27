@@ -11,16 +11,13 @@
         color: #e8e0e0;
     }
 
-    /* .game-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 250px) 24%;
-        grid-gap: 0%;
-        grid-auto-flow: column;
-    } */
-
     .jumbotron {
         background-color: $bgColor;
         padding: 2rem 1rem;
+    }
+
+    .game-slider {
+        padding-bottom: 50px;
     }
 
     .game-box {
@@ -35,8 +32,12 @@
 
     .divider {
         margin-top: 10px;
+        margin-left: -5px;
         border-bottom: 1px solid #494a4f;
         margin-bottom: 1.5%;
     }
 
+    .VueCarousel-navigation-button {
+        outline: none;
+    }
 }

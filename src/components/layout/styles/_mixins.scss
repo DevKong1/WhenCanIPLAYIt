@@ -12,8 +12,13 @@
     padding:0;
     margin-left: 10px;
     margin-right: 10px;
+    
     background-color: #161618;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);    
+    
+    max-height: 380px;  
+    max-width: 200px;
+    min-width: 180px;
 
     .image-box {
         @include hoverTransition();
@@ -21,12 +26,15 @@
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         width: 100%;
+        min-height: 200px;
         :hover {
             @include onHover();
         }
 
         img {
-            object-fit: cover;
+            min-height: 253px;
+            max-height: 253px;
+            object-fit: fill;
             vertical-align: middle;
             border: 0;
             transition: opacity 1s;
@@ -56,21 +64,16 @@
         width: calc(100% - 40px);
 
         .main-title {
+            @include hoverTransition();
             display: block;
             white-space: nowrap;
             text-overflow: ellipsis;
             font-size: 16px;
-            font-size: 0.9vw;
             overflow: hidden;
 
-            a {
-                @include hoverTransition();
-
-                :hover {
-                    color: #e8e5e0;
-                    text-decoration: none;
-                }
-            }
+            :hover {
+                color: #e8e5e07e;
+            }            
         }
 
         .sub-title {

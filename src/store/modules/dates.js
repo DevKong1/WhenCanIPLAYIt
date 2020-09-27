@@ -2,40 +2,37 @@ import axios from 'axios'
 import moment from 'moment'
 
 const state = {
-    recentDates: [],   
+    recentReleases: [],   
+    upcomingReleases: []
 };
 
 const getters = {
-    recentDates: state => state.recentDates
+    recentReleases: state => state.recentReleases,
+    upcomingReleases: state => state.upcomingReleases
 };
 
 const actions = {
     async getRecentDates({ commit }) {
-        let to = moment().add(14, 'days').unix();
-        let from = moment().subtract(14, 'days').unix();
+        let to = moment().add(28, 'days').unix();
+        let from = moment().subtract(7, 'days').unix();
         let response = await axios.get("http://localhost:3030/api/releases", {
                 params: {
                     "from": from,
                     "to": to,
                     "sort": "date",
-                    "category": 0,
-                    "limit": 10
+                    "category": 0
                 }
             });
-        
-        commit('setRecentDates', response.data);
+            
+        commit('setUpcomingReleases', response.data.filter(el => el.date > moment().unix()));
+        commit('setRecentReleases', response.data.filter(el => el.date <= moment().unix()));
     }
 };
 
 const mutations = {
-    setRecentDates: (state, recentDates) => state.recentDates = recentDates
+    setRecentReleases: (state, recentReleases) => state.recentReleases = recentReleases,
+    setUpcomingReleases: (state, upcomingReleases) => state.upcomingReleases = upcomingReleases
 };
-
-//utils 
-function getSeconds(date) {
-    return Math.floor(date / 1000)
-};
-
 
 export default {
     state,
