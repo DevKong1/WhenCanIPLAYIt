@@ -30,4 +30,11 @@
     .VueCarousel-navigation-button {
         outline: none;
     }
+
+    @media screen and (max-width: 845px) {
+        .VueCarousel-navigation { 
+            display: none;
+        }
+    }
+    
 }

@@ -96,6 +96,8 @@ exports.getGames = function(req, res) {
     Games.find(query)
     .populate("release_dates")
     .populate("platforms", "name")
+    .populate("genres", "name")
+    .limit(req.query.limit != null ? Number(req.query.limit) : 0)
     .sort(req.query.sort != null ? req.query.sort : "name")
     .exec(function(err, games) {
         if(err || games == null) {
@@ -109,6 +111,7 @@ exports.getGame = function(req, res) {
     Games.findById(req.params.id)
     .populate("release_dates")
     .populate("platforms", "name")
+    .populate("genres", "name")
     .exec(function(err, game) {
         if(err || game == null) {
             res.send("Error");

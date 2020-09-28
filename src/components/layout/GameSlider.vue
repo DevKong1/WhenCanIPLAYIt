@@ -1,6 +1,6 @@
 <template>  
 <div class="game-gallery">
-<carousel class="row" :perPageCustom="perPages" :paginationEnabled="false" :navigationEnabled="windowWidth > 830 ? true : false" :navigationClickTargetSize="20">
+<carousel class="row" :perPageCustom="perPages" :paginationEnabled="false" :navigationEnabled="true" :navigationClickTargetSize="20">
     <slide class="game-box col-md-2" v-for="date in data" :key="date.id">       
     <div class="image-box">
         <div class="background-image">
@@ -28,7 +28,7 @@ import { Carousel, Slide } from 'vue-carousel';
 import moment from 'moment';
 
 export default {
-  name: 'Home',
+  name: 'GameSlider',
   components: {
   	Carousel,
     Slide
@@ -38,7 +38,6 @@ export default {
   },
   data () {
     return {
-      windowWidth: window.innerWidth,
       perPages: [[0,1.655],[500,2.35],[525,2.4],[540,2.45],[768,4.5],[1200,5.4]]
     }
   },
@@ -46,11 +45,6 @@ export default {
     getReleaseBar(date) {
         return date < moment().unix() ? 'green-bar' : 'red-bar'; 
     }
-  },
-  mounted () {   
-    window.onresize = () => {
-        this.windowWidth = window.innerWidth
-    }
-  } 
+  }
 }
 </script>
