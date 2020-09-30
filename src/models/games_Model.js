@@ -1,4 +1,4 @@
-module.exports = function(mongoose) {
+module.exports = function(mongoose, mongoosePaginate) {
     var Schema = mongoose.Schema;
     var game_schema = new Schema({
         aggregated_rating: Number,
@@ -13,7 +13,7 @@ module.exports = function(mongoose) {
         time_to_beat: Number,
         summary: String,
         code: {type: String, required: true, dropDups: true}
-
     });
+    game_schema.plugin(mongoosePaginate);
     return mongoose.model('games_model', game_schema, 'games');
 };

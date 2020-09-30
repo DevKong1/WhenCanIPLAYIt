@@ -1,4 +1,4 @@
-module.exports = function(mongoose) {
+module.exports = function(mongoose, mongoosePaginate) {
     var Schema = mongoose.Schema;
     var release_date_schema = new Schema({
         game:  {type: Schema.ObjectId, ref: 'games_model', required: true},
@@ -11,6 +11,7 @@ module.exports = function(mongoose) {
         platform: {type: Schema.ObjectId, ref: 'platform_model',required: true},
         region: {type: String, required: true}
     });
+    release_date_schema.plugin(mongoosePaginate);
     return mongoose.model('release_date_model', release_date_schema, 'release_dates');
 };
 

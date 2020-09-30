@@ -7,7 +7,6 @@
 }
 
 .filters-bar {
-    position: absolute;
     font-size: 13px;
     color: #8b9197;
 }
@@ -17,7 +16,7 @@
     float: left;
 
     .multiselect__content-wrapper {
-        min-width: 160px;
+        max-width: 33vw;
         width: unset;
         display: inline-block;
         background-color: #535459 !important;
@@ -93,6 +92,7 @@
 
 .center-image {
     margin-top: -30%;
+    height: auto !important;
 }
 
 .games-list {
@@ -100,14 +100,19 @@
     font-weight: 500;
     color: #e8e5e0;
     line-height: 1.42857143;
-    
+
     .game-row {
+        @include hoverTransition();
         background-color: #161618;
         box-shadow: rgba(17, 6, 1, 0.5) 0px 2px 4px 0px;
         height: 60px;
         margin-bottom: 15px;
         border-radius: 2px;
         overflow: hidden;
+    
+        &:hover {
+            @include onHover();
+        }
 
         .game-row-image {
             width: 107px;
@@ -116,6 +121,7 @@
                 width: 107px;
                 border-radius: 2px 0 0 2px;
                 object-fit: fill;
+                height: 100%;
             }
         }
 
@@ -124,12 +130,13 @@
         }
 
         .game-row-title {
-            width: 250px;
+            min-width: 200px;
+            max-width: 220px;
             padding-left: 13px;
-            padding-top: 12px;
+            padding-top: 21px;
         }
 
-        .game-row-image, .game-row-title {
+        .game-row-image, .game-row-genres, .game-row-title {
             cursor: pointer;
             display: inline-block;
             text-align: left;
@@ -140,30 +147,59 @@
         }
 
         .game-row-release {
-            width: 150px;
+            width: 240px;
+            max-height: 100%;
+            padding-left: 13px;
+        }
+
+        .game-row-release-single {
+            font-size: 12px;
+        }
+
+        .game-row-multirelease {
+            cursor: pointer;
+            text-transform: uppercase;
+            text-align: center;
+            max-height: 100%;
+
+            li a {
+                display: table-cell;
+                vertical-align: middle;
+                height: 20px;
+            }
+        }
+
+        .game-row-release-multi {
+            overflow: hidden;
+            font-size: 10px;
+            text-align: center;
+            text-align: -moz-center;
         }
 
         .game-row-genres {
-            width: 106px;
-        }
-
-        .game-row-platforms {
-            width: 106px;
+            width: 180px;
         }
 
         .game-row-rating {
-            width: 106px;
+            width: 96px;
         }
 
         .game-row-ratingcount {  
-            width: 106px;
+            width: 96px;
         }
 
         .game-row-timetobeat {
-            width: 106px;          
+            width: 70px;          
         }
 
-        .game-row-release, .game-row-genres, .game-row-platforms, .game-row-rating,  .game-row-ratingcount, .game-row-timetobeat {
+        .follow-box {
+            width: 50px;
+            min-width: 50px;
+            float: right;
+        }
+
+
+        .follow-box, .game-row-release, .game-row-platforms, .game-row-rating,  .game-row-ratingcount, .game-row-timetobeat {
             cursor: pointer;
             text-transform: uppercase;
             display: inline-block;
@@ -171,5 +207,22 @@
             vertical-align: top;
             padding-top: 21px;
         }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .games-list {
+        padding-top: 90px;
+    }
+}
+@media screen and (max-width: 430px) {
+    .games-list {
+        padding-top: 140px;
+    }
+}
+
+@media screen and (max-width: 340px) {
+    .game-row-title {
+        min-width: 20px !important;
     }
 }

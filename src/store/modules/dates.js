@@ -20,16 +20,18 @@ const actions = {
         let to = moment().add(28, 'days').unix();
         let from = moment().subtract(7, 'days').unix();
         let response = await axios.get("http://localhost:3030/api/releases", {
-                params: {
-                    "from": from,
-                    "to": to,
-                    "sort": "date",
-                    "category": 0
-                }
-            });
-            
+            params: {
+                "from": from,
+                "to": to,
+                "sort": "date",
+                "category": 0
+            }
+        });
+        
+        console.log(response.data);
+
         commit('setUpcomingReleases', response.data.filter(el => el.date > moment().unix()));
-        commit('setRecentReleases', response.data.filter(el => el.date <= moment().unix()));     
+        commit('setRecentReleases', response.data.filter(el => el.date <= moment().unix()).sort((a, b) => b.date - a.date) );     
         commit('loadingStatus', false);
     }
 };

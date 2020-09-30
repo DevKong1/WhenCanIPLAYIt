@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require('mongoose-paginate-v2');
 const querystring = require("querystring");
 const downloader = require("./IGDBDataDownloader.js");
-const path = require("path");  
 const moment = require('moment');
 
-Release_Dates = require("../../models/release_dates_Model.js")(mongoose);
-Games = require("../../models/games_Model.js")(mongoose);
-Platforms = require("../../models/platforms_Model.js")(mongoose);
-Genres = require("../../models/genres_Model.js")(mongoose);
+Release_Dates = require("../../models/release_dates_Model.js")(mongoose, mongoosePaginate);
+Games = require("../../models/games_Model.js")(mongoose, mongoosePaginate);
+Platforms = require("../../models/platforms_Model.js")(mongoose, mongoosePaginate);
+Genres = require("../../models/genres_Model.js")(mongoose, mongoosePaginate);
 
 const category = [
     'main_game',

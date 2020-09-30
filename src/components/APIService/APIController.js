@@ -53,11 +53,15 @@ exports.releases = function(req, res) {
     }); 
 };
 
-
-
 //GAMES
 exports.getGames = function(req, res) {
     let query = {};
+    let options = {
+        page: req.query.page != null ? Number(req.query.page) : 1,
+        limit: req.query.limit != null ? Number(req.query.limit) : 500,
+        populate: ["release_dates","platforms","genres"],
+        sort: req.query.sort != null ? req.query.sort : "",
+    };
 
     if(req.query.minrating != null && req.query.maxrating != null) {
         query["aggregated_rating"] = {
@@ -93,13 +97,7 @@ exports.getGames = function(req, res) {
         };
     }
     
-    Games.find(query)
-    .populate("release_dates")
-    .populate("platforms", "name")
-    .populate("genres", "name")
-    .limit(req.query.limit != null ? Number(req.query.limit) : 0)
-    .sort(req.query.sort != null ? req.query.sort : "name")
-    .exec(function(err, games) {
+    Games.paginate(query, options, function(err, games) {
         if(err || games == null) {
             res.send("Error");
         } else {
