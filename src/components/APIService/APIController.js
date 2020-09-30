@@ -54,7 +54,7 @@ exports.releases = function(req, res) {
 };
 
 //GAMES
-exports.getGames = function(req, res) {
+exports.getGames = async function(req, res) {
     let query = {};
     let options = {
         page: req.query.page != null ? Number(req.query.page) : 1,
@@ -62,6 +62,13 @@ exports.getGames = function(req, res) {
         populate: ["release_dates","platforms","genres"],
         sort: req.query.sort != null ? req.query.sort : "",
     };
+
+    if(req.query.released != null) {
+        let dates = await Release_Dates.find({category: 0,date: { $lte: req.query.released }});
+        query["release_dates"] = {
+            $in: dates.map(el => el.id)
+        };
+    }
 
     if(req.query.minrating != null && req.query.maxrating != null) {
         query["aggregated_rating"] = {

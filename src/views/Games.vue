@@ -1,19 +1,20 @@
 <template>
 	<div class="games container">
-		<h5 class="text-left">Games ({{188}})</h5>
+    	<Jumbotron v-on:text-changed="setText"/>
+		<h5 class="text-left">Games</h5>
 		<div class="divider"></div>
-		<div v-if="loadingMenu || loadingGames">
+		<div v-if="loadingMenu">
 			<Spinner />
 		</div>
 
 		<div v-else>
 			<div class="filters-bar">
-				<multiselect v-model="selectedRelease" open-direction="bottom" :options="releaseLabels" :searchable="false" placeholder="Release Status" :show-labels="true" :selectedLabel="'✔'" :deselectLabel="'✘'" :selectLabel="''" ></multiselect>
-				<multiselect v-model="selectedGenres"  open-direction="bottom" :multiple="true" :options="genres.map(el => el._id)" :custom-label="opt => genres.find(x => x._id == opt).name" :searchable="false" :close-on-select="false" placeholder="Genres" :show-labels="true" :selectedLabel="'✔'" :deselectLabel="'✘'" :selectLabel="''" >
+				<multiselect v-model="selectedRelease" @input="filterGames()" open-direction="bottom" :options="releaseLabels" :searchable="false" placeholder="Release Status" :show-labels="true" :selectedLabel="'✔'" :deselectLabel="'✘'" :selectLabel="''" :close-on-select="false" ></multiselect>
+				<multiselect v-model="selectedGenres"  @close="filterGames()" open-direction="bottom" :multiple="true" :options="genres.map(el => el._id)" :custom-label="opt => genres.find(x => x._id == opt).name" :searchable="false" :close-on-select="false" placeholder="Genres" :show-labels="true" :selectedLabel="'✔'" :deselectLabel="'✘'" :selectLabel="''" >
 					<template slot="tag">{{ '' }}</template>
 					<template slot="selection" slot-scope="{ values, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} genres selected</span></template>
 				</multiselect>
-				<multiselect v-model="selectedPlatforms"  open-direction="bottom" :multiple="true" :options="platforms.map(el => el._id)" :custom-label="opt => platforms.find(x => x._id == opt).name" :searchable="false" :close-on-select="false" placeholder="Platforms" :show-labels="true" :selectedLabel="'✔'" :deselectLabel="'✘'" :selectLabel="''" >
+				<multiselect v-model="selectedPlatforms" @close="filterGames()" open-direction="bottom" :multiple="true" :options="platforms.map(el => el._id)" :custom-label="opt => platforms.find(x => x._id == opt).name" :searchable="false" :close-on-select="false" placeholder="Platforms" :show-labels="true" :selectedLabel="'✔'" :deselectLabel="'✘'" :selectLabel="''" >
 					<template slot="tag">{{ '' }}</template>
 					<template slot="selection" slot-scope="{ values, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} platforms selected</span></template>
 				</multiselect>
@@ -24,7 +25,7 @@
 					<div class="game-row-image">
 						<img :class="game.cover == 'default_cover.jpg' ? 'game-image center-image' : 'game-image' " :src="game.cover">
 					</div>
-					<div class="game-row-bar purple-bar"></div>
+					<div :class="getReleaseBar(game)"></div>
 					<div class="game-row-title col"> {{game.name}} </div>
 					<ul v-if="game.release_dates.length > 1" class="game-row-multirelease col-sm">
 						<li v-for="date in game.release_dates" :key="date._id" class="game-row-release-multi">
@@ -64,7 +65,7 @@
 					</div>
 				</div>
 
-				<infinite-loading @infinite="infiniteHandler"></infinite-loading>
+				<infinite-loading :identifier="infiniteId" @infinite="infiniteHandler"></infinite-loading>
 			</div>
 		</div>
 	</div>
@@ -75,6 +76,7 @@ import axios from 'axios';
 import Multiselect from 'vue-multiselect';
 import { mapGetters, mapActions } from 'vuex';
 import Spinner from '../components/layout/Spinner';
+import Jumbotron from '../components/layout/Jumbotron'
 import moment from 'moment';
 import InfiniteLoading from 'vue-infinite-loading';
 
@@ -85,21 +87,40 @@ export default {
 	components: { 
 		Multiselect,
 		Spinner,
-		InfiniteLoading
+		InfiniteLoading,
+		Jumbotron
 	},
 	data() {
 		return {
 			page: 1,
+			first: true,
+      		infiniteId: +new Date(),
 			selectedRelease: '',
 			selectedGenres: [],
 			selectedPlatforms: [],
-			releaseLabels: ["Released","Not Released"]
+			releaseLabels: ["Released","Not Released"],
+			searchTitle: ""
 		}
 	},
 	methods: {
-		...mapActions(['getMenuData','getGames', 'loadMoreGames']),
+		...mapActions(['getMenuData','getGames', 'loadGames', 'reset']),
+		setText(newText) {
+			this.searchTitle = newText;		
+			this.page = 1;
+			this.first = true;
+			this.reset();
+      		this.infiniteId += 1;
+		},
 		getReleaseBar(game) {
-			return 'game';
+			if(game.release_dates.filter(el => el.category == 0).length > 0) {
+				if(game.release_dates.filter(el => el.date <= moment().unix()).length > 0) {
+					return 'game-row-bar green-bar';
+				} else {
+					return 'game-row-bar red-bar';
+				}
+			} else {
+				return 'game-row-bar purple-bar';
+			}
 		},
 		checkEmpty(element) {
 			if(element != null) {
@@ -109,10 +130,32 @@ export default {
 			}
 		},
 		infiniteHandler($state) {
-			if(this.loadedAll == false) {
-				this.loadMoreGames(++this.page)
+			if(this.loadedAll == false && this.loadingGames == false) {
+				let released = this.selectedRelease == "Released" ? moment().unix() : null;
+
+				this.loadGames({
+						params: {
+							page: this.page,
+							limit: 20,
+							released: released,
+							genres: this.selectedGenres.length > 0 ? this.selectedGenres : null,
+							platforms: this.selectedPlatforms.length > 0 ? this.selectedPlatforms : null,
+							name: this.searchTitle
+						}
+					})
 					.then(loadState => {
-						$state.loaded();
+						if(this.loadedAll == false) {
+							this.page++;
+							$state.loaded();
+						} else {
+							if(this.page == 1 && this.games.length > 0) {
+								$state.loaded();
+								$state.complete();
+							} else {
+								$state.complete();
+							}
+							
+						}
 					})
 					.catch(error => {
 						console.log("Error downloading data: " + error);
@@ -121,12 +164,19 @@ export default {
 			} else {
 				$state.complete();
 			}
+		},
+		filterGames () {
+			this.page = 1;
+			this.first = true;
+			this.reset();
+      		this.infiniteId += 1;
 		}
 	},
-	computed: mapGetters(['platforms', 'genres', 'loadingMenu', 'games', 'loadingGames', 'loadedAll']),
+	computed: mapGetters(['platforms', 'genres', 'loadingMenu', 'games', 'loadedAll', 'loadingGames']),
 	mounted() {   
 		this.getMenuData();
-		this.getGames();
+		this.reset();
+      	this.infiniteId = +new Date();		
 	} 
 }
 </script>

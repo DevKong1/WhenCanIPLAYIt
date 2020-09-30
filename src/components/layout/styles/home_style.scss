@@ -10,11 +10,16 @@
     }
 
     .divider {   
+        width: calc(100% + 20px);
         margin-left: -5px;
     }
 
     .game-slider {
         padding-bottom: 50px;
+    }
+    
+    .game-gallery {
+        padding-top: 10px;
     }
 
     .game-box {
@@ -25,6 +30,10 @@
         background-image: "D:\hax\Magistrale\Applicazioni e servizi Web\Progetto\whencaniplayit\src\assets\default_cover.jpg";
         background-size: 100%;
         border-radius: 3px 3px 0px 0px;
+    }
+
+    .green-bar, .red-bar {       
+        width: 100%;
     }
 
     .VueCarousel-navigation-button {
