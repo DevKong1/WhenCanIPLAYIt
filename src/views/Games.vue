@@ -1,7 +1,8 @@
 <template>
+<div>
+    	<Jumbotron :initialText="this.initialText" v-on:text-changed="setText"/>
 	<div class="games container">
-    	<Jumbotron v-on:text-changed="setText"/>
-		<h5 class="text-left">Games</h5>
+		<h5 class="text-left">Games({{this.totalGames}})</h5>
 		<div class="divider"></div>
 		<div v-if="loadingMenu">
 			<Spinner />
@@ -18,6 +19,16 @@
 					<template slot="tag">{{ '' }}</template>
 					<template slot="selection" slot-scope="{ values, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} platforms selected</span></template>
 				</multiselect>
+			</div>
+
+			<div v-if="this.games.length > 0" class="row games-caption">
+				<div class="game-caption-image"><span>Cover</span></div>
+				<div class="game-caption-title col"><span @click="setSort('name')">Title<a v-if="selectedSort == 'name'">▲</a><a v-else>▼</a></span></div>
+				<div class="game-caption-multirelease col-sm"><span>Release Dates</span></div>
+				<div class="game-caption-genres col-sm"><span>Genres</span></div>
+				<div class="game-caption-rating col-sm"><span @click="setSort('aggregated_rating')">Rating (%)<a v-if="selectedSort == 'aggregated_rating'">▲</a><a v-else>▼</a></span></div>
+				<div class="game-caption-ratingcount col-sm"><span @click="setSort('aggregated_rating_count')">N. Votes<a v-if="selectedSort == 'aggregated_rating_count'">▲</a><a v-else>▼</a></span></div>
+				<div class="game-caption-timetobeat col-sm"><span @click="setSort('time_to_beat')">TTB<a v-if="selectedSort == 'time_to_beat'">▲</a><a v-else>▼</a></span></div>
 			</div>
 
 			<div class="games-list container-fluid">
@@ -55,20 +66,17 @@
 						<li class="game-row-release-multi"><a>N/A</a></li>				
 						<li class="game-row-release-multi"/>
 					</ul>
-					<div class="game-row-rating" v-html="checkEmpty(game.aggregated_rating)"></div>
+					<div class="game-row-rating" v-html="checkEmptyRating(game.aggregated_rating)"></div>
 					<div class="game-row-ratingcount" v-html="checkEmpty(game.aggregated_rating_count)"></div>
 					<div class="game-row-timetobeat" v-html="checkEmpty(game.time_to_beat)"></div>
-					<div class="follow-box" role="button">
-						<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-							<path fill-rule="evenodd" d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-						</svg>
-					</div>
+					<div class="follow-box" role="button"><i class="far fa-heart"></i></div>
 				</div>
 
 				<infinite-loading :identifier="infiniteId" @infinite="infiniteHandler"></infinite-loading>
 			</div>
 		</div>
 	</div>
+</div>
 </template>
 
 <script>
@@ -90,6 +98,7 @@ export default {
 		InfiniteLoading,
 		Jumbotron
 	},
+	props: ['initialText'],
 	data() {
 		return {
 			page: 1,
@@ -98,8 +107,9 @@ export default {
 			selectedRelease: '',
 			selectedGenres: [],
 			selectedPlatforms: [],
-			releaseLabels: ["Released","Not Released"],
-			searchTitle: ""
+			releaseLabels: ["Released","Not Released","TBA"],
+			searchTitle: "",
+			selectedSort: ""
 		}
 	},
 	methods: {
@@ -129,9 +139,41 @@ export default {
 				return 'N/A';
 			}
 		},
+		checkEmptyRating(el) {
+			if(el == null) {
+				return `N/A <div class="rating-box grey"></div>`;
+			} else {
+				return el + `%<div class="rating-box r` +  el + `"></div>`;
+			}
+		},
+		setSort(value) {
+			if(this.selectedSort == value) {
+				this.selectedSort = "-" + value;
+			} else {		
+				this.selectedSort = value;
+			}
+			this.page = 1;
+			this.first = true;
+			this.reset();
+      		this.infiniteId += 1;
+		},
 		infiniteHandler($state) {
 			if(this.loadedAll == false && this.loadingGames == false) {
-				let released = this.selectedRelease == "Released" ? moment().unix() : null;
+				let released; 
+
+				switch(this.selectedRelease) {
+					case "Released": 
+						released = true;
+						break;
+					case "Not Released":
+						released = false;
+						break;
+					case "TBA":
+						released = "TBA"
+						break;
+					default:
+						released = null;
+				}
 
 				this.loadGames({
 						params: {
@@ -140,7 +182,8 @@ export default {
 							released: released,
 							genres: this.selectedGenres.length > 0 ? this.selectedGenres : null,
 							platforms: this.selectedPlatforms.length > 0 ? this.selectedPlatforms : null,
-							name: this.searchTitle
+							name: this.searchTitle,
+							sort: this.selectedSort == "" ? null : this.selectedSort
 						}
 					})
 					.then(loadState => {
@@ -172,11 +215,15 @@ export default {
       		this.infiniteId += 1;
 		}
 	},
-	computed: mapGetters(['platforms', 'genres', 'loadingMenu', 'games', 'loadedAll', 'loadingGames']),
+	computed: mapGetters(['platforms', 'genres', 'loadingMenu', 'games', 'loadedAll', 'loadingGames', 'totalGames']),
 	mounted() {   
+		if(this.initialText != null) {
+			this.searchTitle == this.initialText;
+		}
 		this.getMenuData();
 		this.reset();
-      	this.infiniteId = +new Date();		
+		this.infiniteId = +new Date();	
+		  	
 	} 
 }
 </script>

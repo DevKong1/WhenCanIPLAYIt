@@ -88,3 +88,12 @@
         }   
     }
 }
+
+@mixin ratingColor {
+    @for $i from 1 through 100 {
+        .r#{$i} {
+            $hue: 120 * ($i / 100);
+            background-color: hsl($hue,100%,50%);
+        }
+    }
+}

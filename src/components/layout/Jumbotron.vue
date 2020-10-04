@@ -1,10 +1,10 @@
 <template>
     <div class="jumbotron text-center">
         <div class="container">
-        <h1>When Can You PLAY It?</h1>
+        <h1><a>When Can You PLAY It?</a></h1>
         <div class="md-form pt-4">
             <form @submit.prevent="">
-                <input v-model="text" @input="$emit('text-changed', text);" class="form-control" type="text" placeholder="Game title...">
+                <input ref="search" v-model="text" @input="$emit('text-changed', text);" class="form-control" type="text" placeholder="Game title...">
             </form>
         </div>
         </div>
@@ -16,9 +16,18 @@
 
     export default {
         name: "Jumbotron",
+        props: {
+            initialText: String
+        },
         data() {
             return {
                 text: ""
+            }
+        },
+        mounted() {
+            if(this.initialText != null) {
+                this.text = this.initialText;
+			    this.$refs.search.focus();
             }
         }
     }

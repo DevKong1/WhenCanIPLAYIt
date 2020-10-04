@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <Jumbotron />
+    <Jumbotron v-on:text-changed="goToGames" />
     <div class="game-slider container">
       <h5 class="text-left">Recent releases</h5>
       <div class="divider"></div>
@@ -41,7 +41,15 @@ export default {
     Jumbotron
   },
   methods: {
-    ...mapActions(['getRecentDates'])
+    ...mapActions(['getRecentDates']),
+    goToGames(newText) {
+      this.$router.push({
+          name: "Games",
+          params: {
+            initialText: newText
+          }
+        });
+    }
   },
   computed: mapGetters(['recentReleases','upcomingReleases', 'loadingStatus']),
   mounted() {   

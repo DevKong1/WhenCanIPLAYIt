@@ -14,6 +14,7 @@
 .multiselect {
     width: 200px !important;
     float: left;
+    user-select: none;
 
     .multiselect__content-wrapper {
         max-width: 33vw;
@@ -58,6 +59,10 @@
         }
     }
 
+    .multiselect__option--highlight {
+        font-weight: bold;
+    }
+
     .multiselect__tags {
         @include hoverTransition();
         background: transparent !important;
@@ -95,8 +100,115 @@
     height: auto !important;
 }
 
+.games-caption {
+    width: 100%;
+    padding-top: 20px;  
+    padding-bottom: 4px;  
+    margin-left: 0 !important;
+    color: #adadad;
+    font-size: 11px;    
+    text-align: center;
+    cursor: default;
+
+    .game-caption-image {
+        max-width: 107px;
+        padding-left: 39px;
+    }
+
+	.game-caption-title {
+        max-width: 200px;
+        padding-left: 95px;
+
+        span {
+            cursor: pointer;
+        }
+    }
+    
+	.game-caption-multirelease, .game-caption-genres {
+        width: 233px;
+    }
+
+    .game-caption-multirelease {
+        padding-left: 80px;
+    }
+
+    .game-caption-genres {
+        margin-left: 0px;
+    }
+    
+	.game-caption-rating, .game-caption-ratingcount {
+        max-width: 96px;
+
+        span {
+            cursor: pointer;
+        }
+    }
+    
+    .game-caption-rating {
+        margin-right: 0px;
+    }
+
+    .game-caption-ratingcount {
+        margin-right: -11px;
+    }
+
+    .game-caption-timetobeat {
+        max-width: 96px;
+        margin-right: 35px;
+
+        span {
+            cursor: pointer;
+        }
+    }
+
+    @media screen and (max-width: 1199px) {
+        .game-caption-genres {
+            margin-left: -28px;
+        }
+
+        .game-caption-multirelease {
+            padding-left: 28px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .game-caption-timetobeat, .game-caption-ratingcount {
+            display: none;
+        }
+
+        .game-caption-genres {
+            margin-left: -43px;
+        }
+
+        .game-caption-multirelease {
+            padding-left: 20px;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .game-caption-genres, .game-caption-rating {
+            display: none;
+        }
+
+        .game-caption-multirelease {
+            padding-left: 50px;
+        }
+    }
+
+    @media screen and (max-width: 575px) {
+        .game-caption-multirelease {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 226px) {
+        .game-caption-title {
+            display: none;
+        }
+    }
+}
+
 .games-list {
-    padding-top: 50px;
     font-weight: 500;
     color: #e8e5e0;
     line-height: 1.42857143;
@@ -180,11 +292,24 @@
         }
 
         .game-row-genres {
-            width: 180px;
+            min-width: 180px;
         }
 
         .game-row-rating {
             width: 96px;
+
+            .rating-box {
+                width: 8px;
+                display: inline-block;
+                margin-left: 10px;
+                height: 13px;
+            }
+
+            .grey {
+                background-color: darkgrey;
+            }
+
+            @include ratingColor;
         }
 
         .game-row-ratingcount {  
@@ -214,13 +339,9 @@
 }
 
 @media screen and (max-width: 767px) {
-    .games-list {
-        padding-top: 90px;
-    }
-}
-@media screen and (max-width: 430px) {
-    .games-list {
-        padding-top: 140px;
+    .multiselect, .multiselect__content-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
     }
 }
 

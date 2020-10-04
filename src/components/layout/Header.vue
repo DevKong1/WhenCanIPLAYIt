@@ -1,5 +1,10 @@
 <template>
-    <header class="header">
+    <header class="header">    
+        <Slide>
+            <router-link class="sidebar-option" to="/"><i class="fas fa-home"></i><a class="router-text">HOME</a></router-link>
+            <router-link class="sidebar-option" to="/games"><i class="fas fa-gamepad"></i><a class="router-text">GAMES</a></router-link>
+            <a class="sidebar-login" @click="$emit('login-pressed')">Sign in</a>
+        </Slide>
         <div id="rowheader" class="vertical-center">
             <div id="top-brand">
                 <div class="logo">
@@ -9,20 +14,18 @@
                 </div>
             </div>
             <div class="content-header-bottom"></div>
-            <div id="main-nav"> 
-                <ul class="nav navbar-nav">
-                    <li>
-                        <router-link class="navbar-link" to="/games">GAMES</router-link>
-                    </li>
-                </ul>
-            </div>
         </div>
     </header>
 </template>
 
 <script>
+import { Slide } from 'vue-burger-menu' 
 import './styles/header_style.scss'
+
 export default {
-    name: "Header"
+    name: "Header",
+    components: {
+        Slide
+    }
 }
 </script>

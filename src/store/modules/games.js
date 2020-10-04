@@ -4,6 +4,7 @@ const state = {
     loadingMenu: false,
     loadedAll: false,
     loadingGames: false,
+    totalGames: 0,
     platforms: [],
     genres: [],
     games: []
@@ -15,7 +16,8 @@ const getters = {
     loadedAll: state => state.loadedAll,
     platforms: state => state.platforms,
     genres: state => state.genres,
-    games: state => state.games
+    games: state => state.games,
+    totalGames: state => state.totalGames
 };
 
 const actions = {
@@ -32,30 +34,19 @@ const actions = {
 
     async reset({ commit }) {
         commit('resetGames');
+        commit('setTotalGames', 0);
         commit('loadedAll', false);
     },
    
     async loadGames({ commit }, filters) {
         commit('setloadingGames', true);
+        
         let games = await axios.get("http://localhost:3030/api/games", filters);
 
         //We are only interested in the most updated release date
         games.data.docs.forEach(game => {    
-            if(game.release_dates.length > 1) {
-                let result = [];
-                game.release_dates.forEach(function(item) {
-                    let found = result.findIndex(el => el.platform == item.platform);
-                    if(found < 0) {
-                        result.push(item);
-                    } else if (result[found].dateAdded < item.dateAdded){
-                        result[found] = item;
-                    }
-                });
-                game.release_dates = result;
-            }
-
             if(game.aggregated_rating != null){
-                game.aggregated_rating = Number(Number(game.aggregated_rating).toFixed(1));
+                game.aggregated_rating = Number(Number(game.aggregated_rating).toFixed(0));
             } 
             if(game.time_to_beat != null){
                 game.time_to_beat = Number(Number(game.time_to_beat/60).toFixed(1));
@@ -65,7 +56,8 @@ const actions = {
         if(games.data.hasNextPage == false) {
             commit('loadedAll', true);
         }
-
+        
+        commit('setTotalGames', games.data.totalDocs);
         commit('addGames', games.data.docs);
         commit('setloadingGames', false);
     }
@@ -77,6 +69,7 @@ const mutations = {
     setPlatforms: (state, platforms) => state.platforms = platforms,
     setGenres: (state, genres) => state.genres = genres,
     addGames: (state, games) => state.games = state.games.concat(games),
+    setTotalGames: (state, n) => state.totalGames = n,
     loadedAll: (state, loaded) => state.loadedAll = loaded,
     resetGames: (state) => state.games = []
 };

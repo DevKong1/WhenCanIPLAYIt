@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 Release_Dates = mongoose.model('release_date_model');
 Games = mongoose.model('games_model');
 Platforms = mongoose.model('platform_model');
@@ -8,11 +9,15 @@ Genres = mongoose.model('genres_model');
 exports.releases = function(req, res) {
     let query = {};
 
-    if(req.query.from != null && req.query.to != null) {
-        query["date"] = {
-            $gte: req.query.from,
-            $lt: req.query.to
-        };
+    if(req.query.from != null || req.query.to != null) {
+        query["date"] = {}
+        if(req.query.from != null){
+            query["date"]["$gte"] = req.query.from;
+        }
+        if(req.query.to != null){
+            query["date"]["$lt"] = req.query.to;
+        }
+        
     }
     if(req.query.recentlyAdded == true) {
         let now = new Date(Date.now());
@@ -56,6 +61,7 @@ exports.releases = function(req, res) {
 //GAMES
 exports.getGames = async function(req, res) {
     let query = {};
+    
     let options = {
         page: req.query.page != null ? Number(req.query.page) : 1,
         limit: req.query.limit != null ? Number(req.query.limit) : 500,
@@ -63,8 +69,18 @@ exports.getGames = async function(req, res) {
         sort: req.query.sort != null ? req.query.sort : "",
     };
 
-    if(req.query.released != null) {
-        let dates = await Release_Dates.find({category: 0,date: { $lte: req.query.released }});
+    if(req.query.released == "true") {
+        let dates = await Release_Dates.find({category: 0, date: { $lte: moment().unix() }});
+        query["release_dates"] = {
+            $in: dates.map(el => el.id)
+        };
+    } else if (req.query.released == "false") {
+        let dates = await Release_Dates.find({category: 0, date: { $gt: moment().unix() }});
+        query["release_dates"] = {
+            $in: dates.map(el => el.id)
+        };
+    } else if (req.query.released == "TBA") {
+        let dates = await Release_Dates.find({category: {$ne: 0}});
         query["release_dates"] = {
             $in: dates.map(el => el.id)
         };

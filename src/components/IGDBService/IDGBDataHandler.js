@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const mongoosePaginate = require('mongoose-paginate-v2');
 const querystring = require("querystring");
 const downloader = require("./IGDBDataDownloader.js");
-const moment = require('moment');
 
 Release_Dates = require("../../models/release_dates_Model.js")(mongoose, mongoosePaginate);
 Games = require("../../models/games_Model.js")(mongoose, mongoosePaginate);
@@ -180,8 +179,18 @@ async function addGames(release_dates, data) {
 			saved_item.screenshots.push(path_base.toString()); 
 		} 
 
+		//delete not update release dates
+		element_release_dates.forEach( date => {
+			element.release_dates = element.release_dates.filter(el => el._id == date._id || el.platform != date.platform || el.region != date.region ||
+																(el._id != date._id &&
+																 el.platform == date.platform && 
+																 el.region == date.region && 
+																 el.updated_at > consideredDate.updated_at));
+		});
+
 		for(release_date in element_release_dates){
 			let consideredDate = element_release_dates[release_date];
+
 			//Create release_date with all the calculated values
 			let saved_release_date = await saveToDB(Release_Dates, {
 				game: saved_item.id,
@@ -190,7 +199,7 @@ async function addGames(release_dates, data) {
 				human: consideredDate.human,
 				m: consideredDate.m,
 				y: consideredDate.y,
-				dateAdded: moment().unix(),
+				dateAdded: consideredDate.created_at,
 				platform: element_Platforms.find(el => el.code == consideredDate.platform).id,
 				region: regions[consideredDate.region-1]
 			});
@@ -255,12 +264,27 @@ exports.handle_releasedatesJSON = async function(data) {
 					let thisGame = result.find(el => el.code == datesToCheck[date].game.toString());
 					let thisPlatform = platforms.find(el => el.code == datesToCheck[date].platform.toString());
 					let thisRegion = regions[datesToCheck[date].region-1];
+
 					//If the DB doenst have a date with the same values
 					if(thisGame != undefined && thisPlatform != undefined &&
 						datesDB.filter(el => el.game == thisGame.id &&
 						el.date == datesToCheck[date].date && 
 						el.platform == thisPlatform.id &&
-						el.region == thisRegion).length <= 0) {	
+						el.region == thisRegion).length <= 0) {
+
+						let oldDates = datesDB.filter(el => el.game == thisGame.id &&
+							el.platform == thisPlatform.id &&
+							el.region == thisRegion &&
+							el.dateAdded < datesToCheck[date].updated_at);
+						
+						oldDates.forEach(async date => {
+							await Release_Dates.deleteOne({_id: date._id});
+							await Games.findByIdAndUpdate(thisGame.id, {
+								$pull: {
+									"release_dates": date._id
+								}
+							});
+						});					
 
 						let saved_release_date = await saveToDB(Release_Dates, {
 						game: thisGame.id,
@@ -270,9 +294,10 @@ exports.handle_releasedatesJSON = async function(data) {
 						m: datesToCheck[date].m,
 						y: datesToCheck[date].y,
 						platform: thisPlatform.id,
-						dateAdded: moment().unix(),
+						dateAdded: datesToCheck[date].updated_at,
 						region: thisRegion
 						});
+
 						let updatedGame = await Games.findByIdAndUpdate(thisGame.id, {
 							$push: {
 								"release_dates": saved_release_date.id

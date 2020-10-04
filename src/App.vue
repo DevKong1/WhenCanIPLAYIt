@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <Header />
+    <notifications group="notify" position="bottom left"/>
+    <Header v-on:login-pressed="show()"/>
+      <modal name="login-modal" :adaptive="true" >
+        Login
+        <Google v-on:logged="hide()"/>
+    </modal>
     <router-view/>
     <Footer />
   </div>
@@ -9,27 +14,24 @@
 <script>
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
+import Google from './components/LoginService/Google'
+
+import './components/layout/styles/main_style.scss'
 
 export default {
   name: 'WhenCanIPLAYIt',
   components: {
     Header,
-    Footer
+    Footer,
+    Google
+  },
+  methods: {
+      show () {
+          this.$modal.show('login-modal');
+      },
+      hide () {
+          this.$modal.hide('login-modal');
+      }
   }
 }
-</script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: white;
-  background-color: #27282e;
-  background-repeat:repeat;
-  min-height: 100vh;
-  display:flex; 
-  flex-direction:column; 
-}
-</style>
+</script> 
