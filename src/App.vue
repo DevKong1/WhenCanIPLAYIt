@@ -2,8 +2,8 @@
   <div id="app">
     <notifications group="notify" position="bottom left"/>
     <Header v-on:login-pressed="show()"/>
-      <modal name="login-modal" :adaptive="true" >
-        Login
+      <modal name="login-modal" :adaptive="true" :width="'270px'" :height="'200px'" >
+        <span class="text-center">Login</span>
         <Google v-on:logged="hide()"/>
     </modal>
     <router-view/>

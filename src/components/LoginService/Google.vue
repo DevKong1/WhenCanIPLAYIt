@@ -1,9 +1,13 @@
 <template>
-     <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure">Login</GoogleLogin>
+<div>
+     <a href="http://localhost:3030/api/auth/google">Login</a>
+     <button @click="this.logWithGoogle">info</button>
+</div>
 </template>
 
 <script>
     import GoogleLogin from 'vue-google-login';
+    import { mapGetters, mapActions } from 'vuex';
 
     export default {
         name: "Google",
@@ -12,9 +16,6 @@
         },
         data() {
             return {
-                params: {
-                    client_id: "622730842078-9lofcuu8e3cj16cei8unieq9qgj4ld6h.apps.googleusercontent.com"
-                },
                 renderParams: {
                     'width': 240,
                     'height': 50,
@@ -24,23 +25,21 @@
             }
         },
         methods: {
-            async onSuccess(user) {
+            ...mapActions(['fetchUserProfile', 'logout']),
+            async logWithGoogle() {
+                await this.fetchUserProfile();
                 this.$emit('logged');
-                this.$notify({
-                    group: 'notify',
-                    type: 'success',
-                    title: 'Signed-in succesfully!'
-                });
-                console.log(user.getBasicProfile());
-            },
-            async onFailure(msg) {
-                this.$notify({
-                    group: 'notify',
-                    type: 'warning',
-                    title: 'Signing-in failed!',
-                    text: msg
-                });
+                console.log(this.getUserProfile);
+                if(this.getUserProfile != null) {
+                    this.$notify({
+                        group: 'notify',
+                        type: 'success',
+                        title: 'Signed-in succesfully!'
+                    });
+                }     
+                axios.get(`${backendUrl}/api/notifications/test`, { withCredentials: true })     
             }
-        }
+        },
+        computed: mapGetters(['getUserProfile'])
     }
 </script>
