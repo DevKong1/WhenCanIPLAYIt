@@ -1,0 +1,18 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+
+.jumbotron {
+    margin-top: $header_height;
+    margin-bottom: 0 !important;
+    background-color: $bgColor !important;
+    
+    h1 {
+        user-select: none;
+    }
+    
+    h1 a {
+        cursor: default;
+        font-family: Ubuntu;
+        text-shadow: 0px 0px 2px white;
+    }
+}

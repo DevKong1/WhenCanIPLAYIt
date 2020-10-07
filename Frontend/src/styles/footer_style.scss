@@ -1,0 +1,19 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+
+footer {
+    text-align: center;
+    display: flex;
+    position: relative;
+    min-height: 7%;
+    height: 7%;
+    min-width: 100%;
+    margin-top: auto; 
+    background-color: $uiColor;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .copyright-text {
+        font-size: 90%;
+    }
+}

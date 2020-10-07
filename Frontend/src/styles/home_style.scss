@@ -1,0 +1,50 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+@import "common.scss";
+
+#home { 
+    h5 {
+        font-weight: 700;
+        font-size: 20px;
+        color: #e8e0e0;
+    }
+
+    .divider {   
+        width: calc(100% + 20px);
+        margin-left: -5px;
+    }
+
+    .game-slider {
+        padding-bottom: 50px;
+    }
+    
+    .game-gallery {
+        padding-top: 10px;
+        text-align: center;
+    }
+
+    .game-box {
+        @include game-box();
+    }
+
+    .background-image {
+        background-image: "D:\hax\Magistrale\Applicazioni e servizi Web\Progetto\whencaniplayit\src\assets\default_cover.jpg";
+        background-size: 100%;
+        border-radius: 3px 3px 0px 0px;
+    }
+
+    .green-bar, .red-bar {       
+        width: 100%;
+    }
+
+    .VueCarousel-navigation-button {
+        outline: none;
+    }
+
+    @media screen and (max-width: 845px) {
+        .VueCarousel-navigation { 
+            display: none;
+        }
+    }
+    
+}
