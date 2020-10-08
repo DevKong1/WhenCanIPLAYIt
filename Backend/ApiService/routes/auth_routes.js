@@ -16,20 +16,19 @@ router
         })	
 	.get("/logout", requireAuth, (req, res) => {
 		try {
-			let url = process.env.FRONTEND_URL + "?logout=true";
-			req.logout();+
-			res.redirect(url);
+			req.logout();
+			res.status(200).json();
 		} catch (e) {
 			res.status(500).json({ description: e });
 		}
 	})
 	.get("/user", requireAuth, async (req, res) => {
 		try {
-			let user = await User.findOne({ _id: res.req.user._id }).lean();
+			let user = await User.findOne({ _id: res.req.user._id });
 			res.json(user);
 		} catch (e) {
 			res.status(500).json({ description: e });
 		}
-    });
+	});
     
 module.exports = router;

@@ -1,10 +1,11 @@
+const express = require("express");
 const GoogleStategy = require("passport-google-oauth20").Strategy;
-const User = require("../models/user_Model")
+const User = require("../models/user_Model");
 
 module.exports = function(passport) {
   passport.use(new GoogleStategy({
-    clientID: "622730842078-9lofcuu8e3cj16cei8unieq9qgj4ld6h.apps.googleusercontent.com",
-    clientSecret: "5EZLbYyh18udNMEXBqGCuISn",
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "/api/auth/google/callback"
   },
   async (accessToken, refreshToken, profile, done) => {
@@ -17,7 +18,7 @@ module.exports = function(passport) {
       image: profile.photos[0].value
     };
     try {
-      let user = await User.findOne({ googleId: profile.id })
+      let user = await User.findOne({ googleId: profile.id });
       if (!user) user = await User.create(newUser);
       done(null, user);
     } catch (e) {

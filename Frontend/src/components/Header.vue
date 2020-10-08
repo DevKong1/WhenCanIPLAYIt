@@ -3,7 +3,12 @@
         <Slide>
             <router-link class="sidebar-option" to="/"><i class="fas fa-home"></i><a class="router-text">HOME</a></router-link>
             <router-link class="sidebar-option" to="/games"><i class="fas fa-gamepad"></i><a class="router-text">GAMES</a></router-link>
-            <a class="sidebar-login" @click="$emit('login-pressed')">Sign in</a>
+            <div v-if="this.getUserProfile != null" class="welcome-msg">
+                <img class="avatar" alt="Avatar" :src="this.getUserProfile.image">
+                <a>Welcome, {{ this.getUserProfile.nickname }}!</a>
+            </div>
+            <a v-if="this.getUserProfile != null" class="sidebar-logout" @click="logoutUser()">Sign Out</a>
+            <a v-else class="sidebar-login" @click="$emit('login-pressed')">Sign in</a>
         </Slide>
         <div id="rowheader" class="vertical-center">
             <div id="top-brand">
@@ -20,12 +25,28 @@
 
 <script>
 import { Slide } from 'vue-burger-menu' 
+import { mapGetters, mapActions } from 'vuex';
 import '../styles/header_style.scss'
 
 export default {
     name: "Header",
     components: {
         Slide
-    }
+    },
+    methods: {
+        ...mapActions(['logout']),
+        async logoutUser() {
+            await this.logout();
+            if(this.getUserProfile == null) {
+                
+                this.$notify({
+                    group: 'notify',
+                    type: 'error',
+                    title: 'Signed-out succesfully!'
+                });
+            }
+        }
+    },
+    computed: mapGetters(['getUserProfile'])
 }
 </script>

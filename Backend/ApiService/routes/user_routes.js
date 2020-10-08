@@ -5,7 +5,7 @@ const APIController = require("../controllers/APIController")
 router
 	.get("/releases", APIController.releases)
 	.get("/games", APIController.getGames)
-	.get("/games/:id", APIController.getGame)
+	.get("/game/:id", APIController.getGame)
 	.get("/platforms", APIController.getPlatforms)
 	.get("/genres", APIController.getGenres);
 

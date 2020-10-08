@@ -69,7 +69,7 @@
 					<div class="game-row-rating" v-html="checkEmptyRating(game.aggregated_rating)"></div>
 					<div class="game-row-ratingcount" v-html="checkEmpty(game.aggregated_rating_count)"></div>
 					<div class="game-row-timetobeat" v-html="checkEmpty(game.time_to_beat)"></div>
-					<div class="follow-box" role="button"><i class="far fa-heart"></i></div>
+      				<FollowGameButton :gameID="game._id" />
 				</div>
 
 				<infinite-loading :identifier="infiniteId" @infinite="infiniteHandler"></infinite-loading>
@@ -87,6 +87,7 @@ import Spinner from '../components/Spinner';
 import Jumbotron from '../components/Jumbotron'
 import moment from 'moment';
 import InfiniteLoading from 'vue-infinite-loading';
+import FollowGameButton from '../components/FollowGameButton';
 
 import '../styles/games_style.scss';
 
@@ -96,7 +97,8 @@ export default {
 		Multiselect,
 		Spinner,
 		InfiniteLoading,
-		Jumbotron
+		Jumbotron,
+		FollowGameButton
 	},
 	props: ['initialText'],
 	data() {

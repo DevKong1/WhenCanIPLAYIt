@@ -1,19 +1,19 @@
 <template>  
 <div class="game-gallery">
 <carousel class="row" :perPageCustom="perPages" :paginationEnabled="false" :navigationEnabled="true" :navigationClickTargetSize="20">
-    <slide class="game-box col-md-2" v-for="date in data" :key="date.id">       
-    <div class="image-box">
-        <div class="background-image">
-          <img :src="date.game.cover">
-        </div>
-        <div :class="getReleaseBar(date.date)"></div>
-    </div>
-    <div class="title-box">
-        <div class="main-title"> <a> {{ date.game.name }} </a> </div>
-        <div class="sub-title"> <a> {{ date.platform.name }} </a> </div>
-        <div class="sub-title"> <a> {{ date.human }} </a> </div>
-    </div>
-    <div class="follow-box" role="button"><i class="far fa-heart"></i></div>
+    <slide class="game-box col-md-2" v-for="date in data" :key="date._id">       
+      <div class="image-box" @click="getGamePage(date.game._id)">
+          <div class="background-image">
+            <img :src="date.game.cover">
+          </div>
+          <div :class="getReleaseBar(date.date)"></div>
+      </div>
+      <div class="title-box">
+          <div class="main-title" @click="getGamePage(date.game._id)"> <a> {{ date.game.name }} </a> </div>
+          <div class="sub-title"> <a> {{ date.platform.name }} </a> </div>
+          <div class="sub-title"> <a> {{ date.human }} </a> </div>
+      </div>
+      <FollowDateButton :dateID="date._id" />
     </slide>      
 </carousel>
 </div>
@@ -22,12 +22,14 @@
 <script>
 import { Carousel, Slide } from 'vue-carousel';
 import moment from 'moment';
+import FollowDateButton from "./FollowDateButton"
 
 export default {
   name: 'GameSlider',
   components: {
   	Carousel,
-    Slide
+    Slide,
+    FollowDateButton
   },
   props: {
     data: Array
@@ -40,6 +42,14 @@ export default {
   methods: {
     getReleaseBar(date) {
         return date < moment().unix() ? 'green-bar' : 'red-bar'; 
+    },
+    getGamePage(id) {
+      this.$router.push({
+          name: "Game",
+          query: {
+            gameID: id
+          }
+        });
     }
   }
 }

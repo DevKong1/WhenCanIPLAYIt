@@ -2,11 +2,12 @@ const express = require('express');
 const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
-const session = require ("express-session")
-const MongoStore = require("connect-mongo")(session)
-const mongoose = require("mongoose")
-const passport = require("passport")
-const webpush = require("web-push")
+const session = require ("express-session");
+const MongoStore = require("connect-mongo")(session);
+const mongoose = require("mongoose");
+const passport = require("passport");
+const webpush = require("web-push");
+const bodyParser = require("body-parser");
 
 // TODO ENV
 var PORT = 3030;
@@ -15,12 +16,16 @@ var dbname = "WhenCanIPLAYIt"
 
 const app = express();
 
+// .env
+dotenv.config();
+
 // Passport config
 require("./auth/passport")(passport)
 
-// config
-dotenv.config();
+// Mongoose
 mongoose.connect('mongodb+srv://admin:' + psw + '@whencaniplayit.zqk4c.mongodb.net/' + dbname + '?retryWrites=true&w=majority', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true  });
+
+// Paths
 global.appRoot = path.resolve(__dirname);
 app.use('/static', express.static(__dirname + '/public'));
 
@@ -36,14 +41,20 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Body-Parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // Cors
 app.use(cors({ credentials: true, origin: true }));
 
 // Routes
 const routes = require("./routes/user_routes");
 const auth_routes = require("./routes/auth_routes");
+const follow_routes = require("./routes/follow_routes");
 app.use("/api", routes);
 app.use("/api/auth", auth_routes);
+app.use("/api/follow", follow_routes);
 
 // Configure web push
 webpush.setVapidDetails(

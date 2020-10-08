@@ -128,6 +128,7 @@ exports.getGames = async function(req, res) {
     }); 
 };
 exports.getGame = function(req, res) {
+    console.log(req.params.id);
     Games.findById(req.params.id)
     .populate("release_dates")
     .populate("platforms", "name")
