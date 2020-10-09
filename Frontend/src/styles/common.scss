@@ -6,15 +6,21 @@
     border-bottom: 1px solid #494a4f;
     margin-bottom: 1.5%;
 }
+.game-row-bar {
+    cursor: pointer;
+    display: inline-block;    
+    width: 4px;
+    height: 100%;
+}
 
 .red-bar {
     background-color: #da1106;
-    height: 4px;
+    width: 4px;
 }
 
 .green-bar {
     background-color: #00ff15;
-    height: 4px;
+    width: 4px;
 }
 
 .purple-bar {  

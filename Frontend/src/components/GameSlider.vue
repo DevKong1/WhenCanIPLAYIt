@@ -2,7 +2,7 @@
 <div class="game-gallery">
 <carousel class="row" :perPageCustom="perPages" :paginationEnabled="false" :navigationEnabled="true" :navigationClickTargetSize="20">
     <slide class="game-box col-md-2" v-for="date in data" :key="date._id">       
-      <div class="image-box" @click="getGamePage(date.game._id)">
+      <div class="image-box">
           <div class="background-image">
             <img :src="date.game.cover">
           </div>

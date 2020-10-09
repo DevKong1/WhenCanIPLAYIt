@@ -53,6 +53,7 @@
 
         .main-title {
             @include hoverTransition();
+            cursor: pointer;
             display: block;
             white-space: nowrap;
             text-overflow: ellipsis;

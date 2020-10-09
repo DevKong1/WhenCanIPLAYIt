@@ -1,7 +1,129 @@
-.carousel {
-    margin-top: 50px;
+@import "_variables.scss";
+@import "_mixins.scss";
 
-    img {
-        height: 250px;
+$height: 200px;
+
+.main-page {
+    min-width: 100%;
+
+    .carousel-box {
+        max-width: 50% !important;   
+        margin-top: 40px;
     }
+    
+    .VueCarousel-wrapper {
+        height: 270px;
+    }
+    
+    .carousel {
+        img {
+            height: 250px;
+            box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 4px 0px;
+        }
+    }
+
+    .info-page {
+        margin-top: 100px;
+        background-color: rgb(22, 22, 24);
+        position: relative;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 4px 0px;
+        height: $height;
+        width: 80vw;
+
+        span {    
+            padding-top: 5px;
+            width: 100%;
+            margin-top: 14px;
+            font-size: 14px;
+            line-height: 16px;
+            font-weight: 500;
+            color: rgb(153, 153, 153);
+        }
+
+        .game-infos {
+            margin-left: 0;
+            
+        }
+
+        .game-infos-box {   
+            padding-left: 0;    
+            height: 100%;
+
+            .game-cover {
+                padding-left: 0;    
+                height: 100%;    
+                flex: 0 0 25%;
+            }
+
+            .game-infos-box-text {              
+                flex: 0 0 75%;
+            }
+            
+            .game-row-bar {
+                height: $height;
+            }
+
+            img {
+                height: 100%;    
+                vertical-align: initial;
+            }
+        }
+
+        .game-title {
+            color: #7fd0bd;
+            font-size: 36px;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-shadow: rgba(161, 255, 242, 0.5) 0px 0px 3px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .game-summary {        
+            padding-right: 20px;
+            width: 100%;
+            font-size: 13px;
+            line-height: 18px;
+            color: #c6d4df;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 7 !important;
+            overflow: hidden;
+        }
+
+        .dates-list {
+
+            .date-name {
+                position: absolute;
+                right: 40px;
+            }
+
+            a {
+                color:white;
+                text-decoration: none;
+            }   
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .info-box, .carousel-box {
+            min-width: 100% !important;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .game-title {
+            font-size: 20px !important;
+            -webkit-line-clamp: 2 !important;
+        }
+
+        .game-summary {
+            padding-right: 0px !important;
+        }
+    }
+
+    
 }
+

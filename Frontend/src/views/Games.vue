@@ -32,7 +32,7 @@
 			</div>
 
 			<div class="games-list container-fluid">
-				<div class="game-row row" v-for="game in games" :key="game.id">   
+				<div class="game-row row" v-for="game in games" :key="game.id" @click="getGamePage(game._id)">   
 					<div class="game-row-image">
 						<img :class="game.cover == 'default_cover.jpg' ? 'game-image center-image' : 'game-image' " :src="game.cover">
 					</div>
@@ -215,6 +215,14 @@ export default {
 			this.first = true;
 			this.reset();
       		this.infiniteId += 1;
+		},
+		getGamePage(id) {
+		this.$router.push({
+			name: "Game",
+			query: {
+				gameID: id
+			}
+			});
 		}
 	},
 	computed: mapGetters(['platforms', 'genres', 'loadingMenu', 'games', 'loadedAll', 'loadingGames', 'totalGames']),

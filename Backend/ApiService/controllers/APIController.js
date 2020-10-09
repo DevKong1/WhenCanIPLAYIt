@@ -131,7 +131,7 @@ exports.getGame = function(req, res) {
     console.log(req.params.id);
     Games.findById(req.params.id)
     .populate("release_dates")
-    .populate("platforms", "name")
+    .populate("platforms")
     .populate("genres", "name")
     .exec(function(err, game) {
         if(err || game == null) {
