@@ -1,5 +1,8 @@
 .DS_Store
 node_modules
+/Backend/IGDBService/node_modules
+/Backend/ApiService/node_modules
+/Frontend/node_modules
 /dist
 
 
@@ -22,5 +25,7 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-/assets/cover
-/asseets/screenshots
+/Frontend/public/cover
+/Frontend/public/screenshots
+Frontend/public/cover
+Frontend/public/screenshots
