@@ -5,8 +5,6 @@ const { requireAuth } = require("../auth/auth");
 
 router
     .post("/date", requireAuth, followController.followDate)
-    .put("/date", requireAuth, followController.unfollowDate)
-    .post("/game", requireAuth, followController.followGame)
-    .put("/game", requireAuth, followController.unfollowGame);
+    .put("/date", requireAuth, followController.unfollowDate);
     
 module.exports = router;

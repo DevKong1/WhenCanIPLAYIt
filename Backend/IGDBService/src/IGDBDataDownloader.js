@@ -2,11 +2,11 @@ const puppeteer = require("puppeteer");
 const querystring = require("querystring");
 const fspath = require('fs-path');
 const fetch = require("node-fetch");
+const dotenv = require("dotenv").config();
 
-//TODO Those ad Env variables
-const proxyURL = "http://localhost:3000/";
-var maxoffset = 5000;
-var limit = 500;
+const proxyURL = "http://" + process.env.PROXY_HOST + ":" + process.env.PROXY_PORT + "/";
+var maxoffset = process.env.IGDB_MAX_OFFSET;
+var limit = process.env.IGDB_LIMIT;
 
 async function downloadAllData(url, data, handleDataCallback = null, callbackParam = null) {
     let parsed = querystring.parse(data);

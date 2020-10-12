@@ -25,29 +25,3 @@ exports.unfollowDate = async function(req, res) {
         res.status(500).json({ description: e });
     }
 };
-
-exports.followGame = async function(req, res) {
-    try {
-        let user = await User.findByIdAndUpdate(res.req.user._id, {
-            $push: {
-                "gamesFollowed": req.body[0]
-            }
-        }, {new: true}); 
-        res.json(user);
-    } catch (e) {
-        res.status(500).json({ description: e });
-    }
-};
-
-exports.unfollowGame = async function(req, res) {
-    try {
-        let user = await User.findByIdAndUpdate(res.req.user._id, {
-            $pull: {
-                "gamesFollowed": req.body[0]
-            }
-        }, {new: true}); 
-        res.json(user);
-    } catch (e) {
-        res.status(500).json({ description: e });
-    }
-};

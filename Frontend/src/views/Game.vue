@@ -1,6 +1,6 @@
 <template>
 <div class="game container d-flex justify-content-center">
-    <div v-if="this.isLoadingGame">      
+    <div class="game-spinner" v-if="this.isLoadingGame">      
         <Spinner />
     </div>
     <div class="info-page container-fluid" v-else-if="this.getGame != null">      

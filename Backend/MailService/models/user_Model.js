@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const user_schema = new mongoose.Schema({
     googleId: {
@@ -37,4 +37,4 @@ const user_schema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("users", user_schema)
+module.exports = mongoose.model("users", user_schema);

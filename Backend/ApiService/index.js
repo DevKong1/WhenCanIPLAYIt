@@ -6,18 +6,17 @@ const session = require ("express-session");
 const MongoStore = require("connect-mongo")(session);
 const mongoose = require("mongoose");
 const passport = require("passport");
-const webpush = require("web-push");
 const bodyParser = require("body-parser");
-
-// TODO ENV
-var PORT = 3030;
-var psw = "4dm1n15tr4t0r589"
-var dbname = "WhenCanIPLAYIt"
 
 const app = express();
 
 // .env
 dotenv.config();
+
+// Load Env variables
+var PORT = process.env.PORT_API;
+var psw = process.env.DB_PSW;
+var dbname = process.env.DB_NAME;
 
 // Passport config
 require("./auth/passport")(passport)
@@ -55,13 +54,6 @@ const follow_routes = require("./routes/follow_routes");
 app.use("/api", routes);
 app.use("/api/auth", auth_routes);
 app.use("/api/follow", follow_routes);
-
-// Configure web push
-webpush.setVapidDetails(
-	"mailto:test@test.com",
-	"BOuXIrNR1n2NvQ8JEWkpO34yqNt9RdyQAQNYMOCZP0UAQ4X1JGwbTiGFegLbYGvxsb5NFaYdlqjTsQM8IReoCHc",
-	"NUu8XBljVZ-EQoI-w9oOHvp-ramA2dzoKiJLCecdcRk"
-)
 
 app.listen(PORT, function () {
 	console.log('Node API server started on port '+ PORT);
