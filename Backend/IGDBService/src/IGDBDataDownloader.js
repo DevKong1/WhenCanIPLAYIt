@@ -13,7 +13,7 @@ async function downloadAllData(url, data, handleDataCallback = null, callbackPar
     let basicQuery = parseQuery(parsed);
 
     const browser = await puppeteer.launch( {
-        headless: true,  //change to true in prod!
+        headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     }); 
 

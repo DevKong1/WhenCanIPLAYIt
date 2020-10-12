@@ -3,59 +3,58 @@
     <div v-if="this.isLoadingGame">      
         <Spinner />
     </div>
-    <div class="main-page container" v-else>      
-        <div class="info-page container" v-if="this.getGame != null">
-            <div class="container row game-infos-box ">
-                <div class="game-cover">
-                    <img class="cover-img" :src="this.getGame.cover" />
-                    <div :class="getReleaseBar()"></div>
-                </div>        
-                <div class="game-infos-box-text">      
-                    <div class="game-title">{{this.getGame.name}}</div>
-                    <div class="game-summary">
-                        <a v-if="this.getGame.summary != null">{{this.getGame.summary}}</a>
-                        <a v-else>Summary N/A</a>
-                    </div> 
-                </div>   
-            </div>
-            <div class="container row game-infos">
-                <div class="col info-box">
-                    <div class="row release-dates">
-                        <span>Release Dates:</span>
-                        <div class="container dates-list">
-                            <div class="row date-item" v-for="date in this.getGame.release_dates" :key="date._id">
-                                <a class="date-platform">{{getGame.platforms.filter(el => el._id == date.platform)[0].name + ": "}}</a>
-                                <a class="date-name ">{{date.human}}</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row game-genres" v-if="this.getGame.genres.length > 0">
-                        <span>Genres:</span>
-                        <a v-for="(genre, index) in this.getGame.genres" :key="genre._id">
-                            {{genre.name + (index != getGame.genres.length - 1 ? ", " : "")}}
-                        </a>
-                    </div>
-                    <div class="row game-rating" >
-                        <span>Rating:</span>
-                        <div class="rating-value">
-                            <a v-if="this.getGame.aggregated_rating != null">{{this.getGame.aggregated_rating}}</a>
-                            <a v-else>N/A</a>
-                        </div>
-                        <span>Votes:</span>
-                        <div class="rating-count">
-                            <a v-if="this.getGame.aggregated_rating_count != null">{{this.getGame.aggregated_rating_count}}</a>
-                            <a v-else>N/A</a>
+    <div class="info-page container-fluid" v-else-if="this.getGame != null">      
+        <div class="container row game-infos-box ">
+            <div class="game-cover">
+                <img class="cover-img" :src="this.getGame.cover" />
+                <div :class="getReleaseBar()"></div>
+            </div>        
+            <div class="game-infos-box-text">      
+                <div class="game-title">{{this.getGame.name}}</div>
+                <div class="game-summary">
+                    <a v-if="this.getGame.summary != null">{{this.getGame.summary}}</a>
+                    <a v-else>Summary N/A</a>
+                </div> 
+            </div>   
+        </div>
+        <div class="container row game-infos">
+            <div class="col-6 info-box">
+                <div class="row release-dates">
+                    <span>Release Dates:</span>
+                    <div class="container dates-list">
+                        <div class="row date-item" v-for="date in this.getGame.release_dates" :key="date._id">
+                            <a class="date-platform">{{getGame.platforms.filter(el => el._id == date.platform)[0].name + ": "}}</a>
+                            <a class="date-name ">{{date.human}}</a>
+                            <FollowDateButton :dateID="date._id" />
                         </div>
                     </div>
                 </div>
-                <div class="col carousel-box">
-                    <carousel v-if="this.getGame.screenshots.length > 0" class="carousel" :perPage="1" :navigationEnabled="false" :autoplay="true" :loop="true">
-                        <slide class="screenshot-box" v-for="ss in this.getGame.screenshots" :key="ss">   
-                            <img :src="ss" />
-                        </slide>
-                    </carousel>
-                </div>      
+                <div class="row game-genres" v-if="this.getGame.genres.length > 0">
+                    <span>Genres:</span>
+                    <a v-for="(genre, index) in this.getGame.genres" :key="genre._id">
+                        {{genre.name + (index != getGame.genres.length - 1 ? ", " : "")}}
+                    </a>
+                </div>
+                <div class="row game-rating" >
+                    <span>Rating:</span>
+                    <div class="rating-value">
+                        <a v-if="this.getGame.aggregated_rating != null">{{this.getGame.aggregated_rating}}</a>
+                        <a v-else>N/A</a>
+                    </div>
+                    <span>Votes:</span>
+                    <div class="rating-count">
+                        <a v-if="this.getGame.aggregated_rating_count != null">{{this.getGame.aggregated_rating_count}}</a>
+                        <a v-else>N/A</a>
+                    </div>
+                </div>
             </div>
+            <div class="col-6 carousel-box">
+                <carousel v-if="this.getGame.screenshots.length > 0" class="carousel" :perPage="1" :navigationEnabled="false" :autoplay="true" :loop="true">
+                    <slide class="screenshot-box" v-for="ss in this.getGame.screenshots" :key="ss">   
+                        <img :src="ss" />
+                    </slide>
+                </carousel>
+            </div> 
         </div>
     </div>
 </div>
@@ -66,6 +65,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { Carousel, Slide } from 'vue-carousel';
 import moment from 'moment';
 import Spinner from '../components/Spinner';
+import FollowDateButton from '../components/FollowDateButton';
 
 import '../styles/game_style.scss';
 export default {
@@ -73,12 +73,12 @@ export default {
     components: {
         Carousel,
         Slide,
-        Spinner
+        Spinner,
+        FollowDateButton
     },
     data() {
         return {
-            gameID: '',
-            perPages: [[0,1.655],[500,2.35],[525,2.4],[540,2.45],[768,4.5],[1200,5.4]]
+            gameID: ''
         }
     },
     methods: {

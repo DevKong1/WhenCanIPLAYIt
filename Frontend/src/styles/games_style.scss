@@ -219,6 +219,7 @@
         box-shadow: rgba(17, 6, 1, 0.5) 0px 2px 4px 0px;
         height: 60px;
         margin-bottom: 15px;
+        padding-right: 50px;
         border-radius: 2px;
         overflow: hidden;
     
@@ -313,14 +314,9 @@
             width: 70px;          
         }
 
-        .follow-box {
-            width: 50px;
-            min-width: 50px;
-            float: right;
-        }
 
 
-        .follow-box, .game-row-release, .game-row-platforms, .game-row-rating,  .game-row-ratingcount, .game-row-timetobeat {
+        .game-row-release, .game-row-platforms, .game-row-rating,  .game-row-ratingcount, .game-row-timetobeat {
             cursor: pointer;
             text-transform: uppercase;
             display: inline-block;

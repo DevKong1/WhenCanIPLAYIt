@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     getReleaseBar(date) {
-        return date < moment().unix() ? 'green-bar' : 'red-bar'; 
+        return date < moment().unix() ? 'slider-bar green-bar' : 'slider-bar red-bar'; 
     },
     getGamePage(id) {
       this.$router.push({

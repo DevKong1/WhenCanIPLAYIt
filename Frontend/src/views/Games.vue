@@ -4,10 +4,10 @@
 	<div class="games container">
 		<h5 class="text-left">Games({{this.totalGames}})</h5>
 		<div class="divider"></div>
+
 		<div v-if="loadingMenu">
 			<Spinner />
 		</div>
-
 		<div v-else>
 			<div class="filters-bar">
 				<multiselect v-model="selectedRelease" @input="filterGames()" open-direction="bottom" :options="releaseLabels" :searchable="false" placeholder="Release Status" :show-labels="true" :selectedLabel="'✔'" :deselectLabel="'✘'" :selectLabel="''" :close-on-select="false" ></multiselect>
@@ -69,7 +69,6 @@
 					<div class="game-row-rating" v-html="checkEmptyRating(game.aggregated_rating)"></div>
 					<div class="game-row-ratingcount" v-html="checkEmpty(game.aggregated_rating_count)"></div>
 					<div class="game-row-timetobeat" v-html="checkEmpty(game.time_to_beat)"></div>
-      				<FollowGameButton :gameID="game._id" />
 				</div>
 
 				<infinite-loading :identifier="infiniteId" @infinite="infiniteHandler"></infinite-loading>
@@ -87,7 +86,6 @@ import Spinner from '../components/Spinner';
 import Jumbotron from '../components/Jumbotron'
 import moment from 'moment';
 import InfiniteLoading from 'vue-infinite-loading';
-import FollowGameButton from '../components/FollowGameButton';
 
 import '../styles/games_style.scss';
 
@@ -97,8 +95,7 @@ export default {
 		Multiselect,
 		Spinner,
 		InfiniteLoading,
-		Jumbotron,
-		FollowGameButton
+		Jumbotron
 	},
 	props: ['initialText'],
 	data() {

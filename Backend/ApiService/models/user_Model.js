@@ -29,10 +29,6 @@ const user_schema = new mongoose.Schema({
     datesFollowed: {
         type: [mongoose.Schema.Types.ObjectId],
         default: []
-    },
-    gamesFollowed: {
-        type: [mongoose.Schema.Types.ObjectId],
-        default: []
     }
 });
 
