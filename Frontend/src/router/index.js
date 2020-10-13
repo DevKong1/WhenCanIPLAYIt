@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Games from '../views/Games.vue'
 import Game from '../views/Game.vue'
+import Options from '../views/Options.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ const routes = [
 	name: 'Game',
 	props: true,
 	component: Game
+  },
+  {
+	path: '/options',
+	name: 'Options',
+	component: Options
   }
 ]
 
@@ -31,4 +37,4 @@ const router = new VueRouter({
 	routes: routes
 })
 
-export default router
+export default router;

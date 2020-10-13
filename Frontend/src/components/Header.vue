@@ -6,6 +6,9 @@
             <div v-if="this.getUserProfile != null" class="welcome-msg">
                 <img class="avatar" alt="Avatar" :src="this.getUserProfile.image">
                 <a>Welcome, {{ this.getUserProfile.nickname }}!</a>
+                <div class="settings-i" @click="routeOptions">
+                    <i class="fas fa-cog"></i>
+                </div>
             </div>
             <a v-if="this.getUserProfile != null" class="sidebar-logout" @click="logoutUser()">Sign Out</a>
             <a v-else class="sidebar-login" @click="$emit('login-pressed')">Sign in</a>
@@ -45,6 +48,11 @@ export default {
                     title: 'Signed-out succesfully!'
                 });
             }
+        },
+        routeOptions() {
+            this.$router.push({
+                name: "Options"
+            });
         }
     },
     computed: mapGetters(['getUserProfile'])

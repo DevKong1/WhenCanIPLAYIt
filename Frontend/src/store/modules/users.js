@@ -47,7 +47,12 @@ const actions = {
     async unfollowGame({ commit }, game) {
         let { data } = await axios.put("http://localhost:3030/api/follow/game", [game], { withCredentials: true });
         await commit("setUser", data);
-    }
+    },
+
+    async setMailNotifications({ commit }, value) {
+        let { data } = await axios.put("http://localhost:3030/api/notifications/mail", [value], { withCredentials: true });
+        await commit("setUser", data);
+    },
 };
 
 const mutations = {

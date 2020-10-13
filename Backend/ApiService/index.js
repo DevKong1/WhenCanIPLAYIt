@@ -51,9 +51,11 @@ app.use(cors({ credentials: true, origin: true }));
 const routes = require("./routes/user_routes");
 const auth_routes = require("./routes/auth_routes");
 const follow_routes = require("./routes/follow_routes");
+const notification_routes = require("./routes/notification_routes");
 app.use("/api", routes);
 app.use("/api/auth", auth_routes);
 app.use("/api/follow", follow_routes);
+app.use("/api/notifications", notification_routes);
 
 app.listen(PORT, function () {
 	console.log('Node API server started on port '+ PORT);

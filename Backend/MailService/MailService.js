@@ -35,7 +35,7 @@ async function dailyReminder() {
 
     let users = await User.find({"datesFollowed": {
         $in: data.map(el => el._id)
-    }});
+    }, "mailNotifications": true});
 
     users.forEach(user => {
         let mailDates = data.filter(el => user.datesFollowed.includes(el._id.toString()));

@@ -131,8 +131,15 @@
     }
 
     .welcome-msg {
+        position: absolute;
+        bottom: 60px;
+        width: 100%;
+        max-height: 58px;
+        font-weight: bold;
+        white-space: nowrap;
+        font-size: 14px;
+
         .avatar {
-            cursor: pointer;
             vertical-align: middle;
             width: 40px;
             height: 40px;
@@ -145,12 +152,17 @@
             padding-top: 9px;
         }
 
-        position: absolute;
-        bottom: 60px;
-        width: 100%;
-        max-height: 58px;
-        font-weight: bold;
-        white-space: nowrap;
-        font-size: 14px;
+        svg {
+            @include hoverTransition();
+            cursor: pointer;
+            margin-top: 9px;
+            height: 20px !important;    
+            width: 100% !important;
+            margin-left: 6px;
+
+            &:hover {
+                @include onHover();
+            }
+        }
     }
 }

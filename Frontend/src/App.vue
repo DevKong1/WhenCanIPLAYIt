@@ -47,7 +47,7 @@ export default {
   },
   computed: mapGetters(['getUserProfile']),
   async created() {
-	await this.fetchUserProfile();
+	  await this.fetchUserProfile();
     
     if (this.$route.query.loginSuccessful && this.getUserProfile != null) {
 		let query = { ...this.$route.query };
