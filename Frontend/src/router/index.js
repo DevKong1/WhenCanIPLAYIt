@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Games from '../views/Games.vue'
 import Game from '../views/Game.vue'
 import Options from '../views/Options.vue'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -28,7 +29,19 @@ const routes = [
   {
 	path: '/options',
 	name: 'Options',
-	component: Options
+	component: Options,
+	beforeEnter: async (to, from, next) => {
+		await store.dispatch("fetchUserProfile");     
+    	if(store.getters["getUserProfile"] == null) {
+			next({ path: '/' });
+			Vue.notify({
+				group: 'notify',
+				type: 'error',
+				title: 'You need to be signed-in in order to see this page!'
+			});
+		}
+		next();
+	}
   }
 ]
 
