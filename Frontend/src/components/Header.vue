@@ -41,7 +41,9 @@ export default {
         async logoutUser() {
             await this.logout();
             if(this.getUserProfile == null) {
-                
+                this.$router.push({
+                    name: "Home"
+                });
                 this.$notify({
                     group: 'notify',
                     type: 'error',
