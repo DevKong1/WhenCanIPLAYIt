@@ -11,6 +11,10 @@
         .multiselect {
             min-width: 80%;
 
+            .multiselect__tags {
+                background: #535459 !important;
+            }
+
             .multiselect__content-wrapper {
                 width: 100%;
                 max-width: 100% !important;
@@ -47,7 +51,7 @@
 
         button {
             width: 100%;    
-            margin-top: 7px;
+            margin-top: 20px;
             height: 30px;
             margin-left: 0 !important;
         }

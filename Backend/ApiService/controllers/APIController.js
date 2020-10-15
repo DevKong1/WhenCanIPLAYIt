@@ -114,8 +114,8 @@ exports.getGames = async function(req, res) {
     }
     if(req.query.mintobeat != null && req.query.maxtobeat != null) {
         query["time_to_beat"] = {
-            $gte: req.query.minrating,
-            $lte: req.query.maxrating
+            $gte: req.query.mintobeat,
+            $lte: req.query.maxtobeat
         };
     }
     

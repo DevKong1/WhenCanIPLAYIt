@@ -4,7 +4,7 @@
             <h2> E-mail Notifications </h2>
             <div class="divider"></div>
             <div class="form-email">
-                    <multiselect v-model="selectedMail"  open-direction="bottom" :options="mailSettings" :searchable="false" placeholder="" :show-labels="true" :selectedLabel="'✔'" :deselectLabel="'✘'" :selectLabel="''" :close-on-select="false" ></multiselect>			
+                    <multiselect v-model="selectedMail" open-direction="bottom" :allowEmpty="false" :options="mailSettings" :searchable="false" placeholder="" :show-labels="true" :selectedLabel="'✔'" :deselectLabel="'✘'" :selectLabel="''" :close-on-select="false" ></multiselect>			
                     <button @click="updateMail">Save</button>
             </div>
         </div>
@@ -24,7 +24,7 @@ export default {
   data() {
       return {
             mailSettings: ["Receive mail notifications","Not receive mail notifications"],
-            selectedMail: ""
+            selectedMail: "Receive mail notifications"
       }
   },
   methods: {

@@ -27,7 +27,7 @@ export default {
     Google
   },
   metaInfo: {
-    title: "When Can You PLAY It!",
+    title: "When Can I PLAY It!",
     link: [
       { rel: 'icon', href: "/favicon.png" }
     ],
