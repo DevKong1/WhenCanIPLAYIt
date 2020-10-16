@@ -6,7 +6,7 @@
     <div class="info-page container-fluid" v-else-if="this.getGame != null">      
         <div class="container row game-infos-box ">
             <div class="game-cover">
-                <img class="cover-img" :src="this.getGame.cover" />
+                <img class="cover-img" :src="loadImage(this.getGame.cover)" />
                 <div :class="getReleaseBar()"></div>
             </div>        
             <div class="game-infos-box-text">      
@@ -51,7 +51,7 @@
             <div class="col-6 carousel-box">
                 <carousel v-if="this.getGame.screenshots.length > 0" class="carousel" :perPage="1" :navigationEnabled="false" :autoplay="true" :loop="true">
                     <slide class="screenshot-box" v-for="ss in this.getGame.screenshots" :key="ss">   
-                        <img :src="ss" />
+                        <img :src="loadImage(ss)" />
                     </slide>
                 </carousel>
             </div> 
@@ -66,6 +66,7 @@ import { Carousel, Slide } from 'vue-carousel';
 import moment from 'moment';
 import Spinner from '../components/Spinner';
 import FollowDateButton from '../components/FollowDateButton';
+import { getImg } from "../utils/imageUtils";
 
 import '../styles/game_style.scss';
 export default {
@@ -82,18 +83,21 @@ export default {
         }
     },
     methods: {
-    ...mapActions(['loadGame']),
-    getReleaseBar() {
-        if(this.getGame.release_dates.filter(el => el.category == 0).length > 0) {
-            if(this.getGame.release_dates.filter(el => el.date <= moment().unix()).length > 0) {
-                return 'game-row-bar green-bar';
+        ...mapActions(['loadGame']),
+        getReleaseBar() {
+            if(this.getGame.release_dates.filter(el => el.category == 0).length > 0) {
+                if(this.getGame.release_dates.filter(el => el.date <= moment().unix()).length > 0) {
+                    return 'game-row-bar green-bar';
+                } else {
+                    return 'game-row-bar red-bar';
+                }
             } else {
-                return 'game-row-bar red-bar';
+                return 'game-row-bar purple-bar';
             }
-        } else {
-            return 'game-row-bar purple-bar';
+        },
+        loadImage(url) {
+            return getImg(url);
         }
-    }
     },
     computed: mapGetters(['isLoadingGame', 'getGame']),
     mounted() {   

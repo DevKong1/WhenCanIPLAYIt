@@ -34,7 +34,7 @@
 			<div class="games-list container-fluid">
 				<div class="game-row row" v-for="game in games" :key="game.id" @click="getGamePage(game._id)">   
 					<div class="game-row-image">
-						<img :class="game.cover == 'default_cover.jpg' ? 'game-image center-image' : 'game-image' " :src="game.cover">
+						<img :class="game.cover == 'default_cover.jpg' ? 'game-image center-image' : 'game-image' " :src="loadImage(game.cover)">
 					</div>
 					<div :class="getReleaseBar(game)"></div>
 					<div class="game-row-title col"> {{game.name}} </div>
@@ -86,6 +86,7 @@ import Spinner from '../components/Spinner';
 import Jumbotron from '../components/Jumbotron'
 import moment from 'moment';
 import InfiniteLoading from 'vue-infinite-loading';
+import { getImg } from "../utils/imageUtils";
 
 import '../styles/games_style.scss';
 
@@ -221,7 +222,10 @@ export default {
 				gameID: id
 			}
 			});
-		}
+		},
+        loadImage(url) {
+            return getImg(url);
+        }
 	},
 	computed: mapGetters(['platforms', 'genres', 'loadingMenu', 'games', 'loadedAll', 'loadingGames', 'totalGames']),
 	mounted() {   

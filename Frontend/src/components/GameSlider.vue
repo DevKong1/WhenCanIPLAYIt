@@ -4,7 +4,7 @@
     <slide class="game-box col-md-2" v-for="date in data" :key="date._id">       
       <div class="image-box">
           <div class="background-image">
-            <img :src="date.game.cover">
+            <img :src="loadImage(date.game.cover)">
           </div>
           <div :class="getReleaseBar(date.date)"></div>
       </div>
@@ -22,7 +22,8 @@
 <script>
 import { Carousel, Slide } from 'vue-carousel';
 import moment from 'moment';
-import FollowDateButton from "./FollowDateButton"
+import FollowDateButton from "./FollowDateButton";
+import { getImg } from "../utils/imageUtils";
 
 export default {
   name: 'GameSlider',
@@ -50,6 +51,9 @@ export default {
             gameID: id
           }
         });
+    },
+    loadImage(url) {
+      return getImg(url);
     }
   }
 }

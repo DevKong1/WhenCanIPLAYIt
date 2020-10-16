@@ -84,7 +84,7 @@ async function downloadImage(url, path, callback) {
 	const response = await fetch_retry(url);
     const buffer = await response.buffer();
     
-	fspath.writeFile("../../Frontend/" + path, buffer, callback);
+	fspath.writeFile(path, buffer, callback);
 }
 
 function parseQuery(parsed) {
