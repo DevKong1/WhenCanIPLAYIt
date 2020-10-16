@@ -83,7 +83,7 @@ async function downloadImage(url, path, callback) {
     
 	const response = await fetch_retry(url);
     const buffer = await response.buffer();
-    //TODO ONLY BECAUSE WE DONT UPLOAD IT ONLINE
+    
 	fspath.writeFile("../../Frontend/" + path, buffer, callback);
 }
 

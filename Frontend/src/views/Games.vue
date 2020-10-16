@@ -175,34 +175,35 @@ export default {
 				}
 
 				this.loadGames({
-						params: {
-							page: this.page,
-							limit: 20,
-							released: released,
-							genres: this.selectedGenres.length > 0 ? this.selectedGenres : null,
-							platforms: this.selectedPlatforms.length > 0 ? this.selectedPlatforms : null,
-							name: this.searchTitle,
-							sort: this.selectedSort == "" ? null : this.selectedSort
-						}
-					})
-					.then(loadState => {
-						if(this.loadedAll == false) {
-							this.page++;
+					params: {
+						page: this.page,
+						limit: 20,
+						released: released,
+						genres: this.selectedGenres.length > 0 ? this.selectedGenres : null,
+						platforms: this.selectedPlatforms.length > 0 ? this.selectedPlatforms : null,
+						name: this.searchTitle,
+						sort: this.selectedSort == "" ? null : this.selectedSort
+					}
+				})
+				.then(loadState => {
+					//if there were other pages left we inc the page counter
+					if(this.loadedAll == false) {
+						this.page++;
+						$state.loaded();
+					} else {
+						//else the request can either be complete or there wasnt any response
+						if(this.page == 1 && this.games.length > 0) {
 							$state.loaded();
+							$state.complete();
 						} else {
-							if(this.page == 1 && this.games.length > 0) {
-								$state.loaded();
-								$state.complete();
-							} else {
-								$state.complete();
-							}
-							
-						}
-					})
-					.catch(error => {
-						console.log("Error downloading data: " + error);
-						$state.error();
-					});
+							$state.complete();
+						}						
+					}
+				})
+				.catch(error => {
+					console.log("Error downloading data: " + error);
+					$state.error();
+				});
 			} else {
 				$state.complete();
 			}

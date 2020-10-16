@@ -33,7 +33,7 @@ const routes = [
 	beforeEnter: async (to, from, next) => {
 		await store.dispatch("fetchUserProfile");     
     	if(store.getters["getUserProfile"] == null) {
-			next({ path: '/' });
+			next({ name: 'Home' });
 			Vue.notify({
 				group: 'notify',
 				type: 'error',

@@ -93,7 +93,7 @@ async function addGames(release_dates, data) {
 		});
 
 		if(platformsSet.length != platforms.length) {
-			let newPlatforms = platformsSet.filter(el => !platforms.map(el => el.code).includes(el.toString()));
+			let newPlatforms = platformsSet.filter(el => !platforms.map(x => x.code).includes(el.toString()));
 			console.log("Downloading new platforms: " + newPlatforms);
 			let newPlatformsData = await getSpecificData("https://api-v3.igdb.com/platforms", "fields name;", newPlatforms);
 

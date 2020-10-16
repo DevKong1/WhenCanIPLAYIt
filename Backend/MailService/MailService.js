@@ -43,7 +43,7 @@ async function dailyReminder() {
         let mailOptions = {
             from: process.env.MAIL,
             to: user.mail,
-            subject: "WhenCanYouPLAYIt release reminder",
+            subject: "WhenCanIPLAYIt release reminder",
             template: "dailyReminder",
             context: {
                 nick: user.nickname,

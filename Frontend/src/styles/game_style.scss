@@ -170,6 +170,10 @@ $height: 200px;
         .date-name {
             right: 0 !important;
         }
+
+        .follow-box {
+            right: -25px !important;
+        }
     }
     
     @media screen and (max-width: 430px) {
@@ -188,6 +192,10 @@ $height: 200px;
         .date-name, .date-platform {
             width: 100%;
             text-align: center;
+        }
+
+        .follow-box {
+            right: 20px !important;
         }
     }
 }
