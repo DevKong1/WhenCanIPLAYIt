@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Google from './components/Google'
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Google from './components/Google';
 import { mapGetters, mapActions } from 'vuex';
 
-import './styles/main_style.scss'
+import './styles/main_style.scss';
 
 export default {
   name: 'WhenCanIPLAYIt',

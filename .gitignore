@@ -25,7 +25,7 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-/Frontend/public/cover
-/Frontend/public/screenshots
-Frontend/public/cover
-Frontend/public/screenshots
+/Backend/IGDBService/public/cover
+/Backend/IGDBService/public/screenshots
+Backend/IGDBService/public/cover
+Backend/IGDBService/public/screenshots
