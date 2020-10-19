@@ -51,12 +51,12 @@
 
 .bm-burger-button {
     @include hoverTransition();
-    position: absolute;
-    width: 35px;
-    height: 30px;
-    left: 14px;
-    top: 10px;
-    cursor: pointer;
+    position: absolute !important;
+    width: 35px !important;
+    height: 30px !important;
+    left: 14px !important;
+    top: 10px !important;
+    cursor: pointer !important;
     z-index: 10;
 
     &:hover {
@@ -65,13 +65,13 @@
 }
 
 .bm-burger-bars {    
-    height: 12%;
-    border-radius: 2px;
-	background-color: #d9d9d9;
+    height: 12% !important;
+    border-radius: 2px !important;
+	background-color: #d9d9d9 !important;
 }
 
 .bm-item-list {
-    margin-left: 0;
+    margin-left: 0 !important;
 
     .router-link-exact-active {
         background-color: #0603038f !important;
