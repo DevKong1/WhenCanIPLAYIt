@@ -34,7 +34,7 @@
 			<div class="games-list container-fluid">
 				<div class="game-row row" v-for="game in games" :key="game.id" @click="getGamePage(game._id)">   
 					<div class="game-row-image">
-						<img :class="game.cover == 'default_cover.jpg' ? 'game-image center-image' : 'game-image' " :src="loadImage(game.cover)">
+						<img class="game-image center-image" :src="loadImage(game.cover)">
 					</div>
 					<div :class="getReleaseBar(game)"></div>
 					<div class="game-row-title col"> {{game.name}} </div>

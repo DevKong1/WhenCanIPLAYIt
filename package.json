@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-      "postinstall": "(cd Backend/ApiService && npm i); (cd Backend/IGDBService && npm i); (cd Backend/MailService && npm i); (cd Frontend && npm i && npm run build)",
-      "deploy": "(cd Backend/IGDBService && node \"index.js\" &); (cd Backend/MailService && node \"index.js\" &); (cd Backend/ApiService && node \"index.js\")"
+      "postinstall": "(cd Backend/ApiService && npm i); (cd Backend/MailService && npm i); (cd Frontend && npm i && npm run build && mv dist/* ../Backend/ApiService/public/)",
+      "deploy": "(cd Backend/MailService && node \"index.js\" &); (cd Backend/ApiService && node \"index.js\")"
     },
     "keywords": [],
     "author": "",

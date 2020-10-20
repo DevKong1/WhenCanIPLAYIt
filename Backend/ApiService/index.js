@@ -7,6 +7,7 @@ const MongoStore = require("connect-mongo")(session);
 const mongoose = require("mongoose");
 const passport = require("passport");
 const bodyParser = require("body-parser");
+const history = require('connect-history-api-fallback');
 
 const app = express();
 
@@ -26,7 +27,6 @@ mongoose.connect('mongodb+srv://admin:' + psw + '@whencaniplayit.zqk4c.mongodb.n
 
 // Paths
 global.appRoot = path.resolve(__dirname);
-app.use('/static', express.static(__dirname + '/public'));
 
 // Session
 app.use(session({
@@ -47,6 +47,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Cors
 app.use(cors({ credentials: true, origin: true }));
 
+
 // Routes
 const routes = require("./routes/user_routes");
 const auth_routes = require("./routes/auth_routes");
@@ -56,6 +57,10 @@ app.use("/api", routes);
 app.use("/api/auth", auth_routes);
 app.use("/api/follow", follow_routes);
 app.use("/api/notifications", notification_routes);
+
+// Connect-hisory-api-fallback
+app.use(history());
+app.use(express.static("public"));
 
 app.listen(PORT, function () {
 	console.log('Node API server started on port '+ PORT);
