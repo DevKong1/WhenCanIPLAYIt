@@ -3,6 +3,7 @@ const Release_Dates = require("../models/release_dates_Model");
 const Games = require("../models/games_Model");
 const Platforms = require("../models/platforms_Model");
 const Genres = require("../models/genres_Model");
+const User = require("../models/user_Model");
 
 //DATES
 exports.releases = function(req, res) {
@@ -68,20 +69,27 @@ exports.getGames = async function(req, res) {
         sort: req.query.sort != null ? req.query.sort : "",
     };
 
-    if(req.query.released == "true") {
-        let dates = await Release_Dates.find({category: 0, date: { $lte: moment().unix() }});
+    // Release Dates 
+    if (req.query.released != null || req.query.followed != null) {
+        let dates = [];
+        let userdates = [];
+
+        if(req.query.released == "true") {
+            dates = await Release_Dates.find({category: 0, date: { $lte: moment().unix() }});
+        } else if (req.query.released == "false") {
+            dates = await Release_Dates.find({category: 0, date: { $gt: moment().unix() }});
+        } else if (req.query.released == "TBA") {
+            dates = await Release_Dates.find({category: {$ne: 0}});           
+        }
+        dates = dates.map(el => el.id);
+
+        if(req.query.followed != null) {
+            user = await User.findById(req.query.followed);
+            userdates = user.datesFollowed;
+        }
+        
         query["release_dates"] = {
-            $in: dates.map(el => el.id)
-        };
-    } else if (req.query.released == "false") {
-        let dates = await Release_Dates.find({category: 0, date: { $gt: moment().unix() }});
-        query["release_dates"] = {
-            $in: dates.map(el => el.id)
-        };
-    } else if (req.query.released == "TBA") {
-        let dates = await Release_Dates.find({category: {$ne: 0}});
-        query["release_dates"] = {
-            $in: dates.map(el => el.id)
+            $in: userdates.length > 0 ? (req.query.released != null ? dates.filter(el => userdates.includes(el)) : userdates) : dates
         };
     }
 
@@ -111,7 +119,7 @@ exports.getGames = async function(req, res) {
         query["platforms"] = { 
             $in: req.query.platforms
         };
-    }
+    }  
     if(req.query.mintobeat != null && req.query.maxtobeat != null) {
         query["time_to_beat"] = {
             $gte: req.query.mintobeat,

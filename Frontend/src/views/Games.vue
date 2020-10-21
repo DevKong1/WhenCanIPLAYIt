@@ -19,6 +19,9 @@
 					<template slot="tag">{{ '' }}</template>
 					<template slot="selection" slot-scope="{ values, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} platforms selected</span></template>
 				</multiselect>
+				<toggle-button v-if="this.getUserProfile != null" v-model="followed" :value="false" :width="100" @change="filterGames()"
+               :labels="{checked: 'Followed', unchecked: 'Not Followed'}"
+			   :color="{checked: '#41b883', unchecked: 'rgb(86, 86, 87)'}"/>
 			</div>
 
 			<div v-if="this.games.length > 0" class="row games-caption">
@@ -86,6 +89,7 @@ import Spinner from '../components/Spinner';
 import Jumbotron from '../components/Jumbotron'
 import moment from 'moment';
 import InfiniteLoading from 'vue-infinite-loading';
+import { ToggleButton } from 'vue-js-toggle-button'
 import { getImg } from "../utils/imageUtils";
 
 import '../styles/games_style.scss';
@@ -96,7 +100,8 @@ export default {
 		Multiselect,
 		Spinner,
 		InfiniteLoading,
-		Jumbotron
+		Jumbotron,
+		ToggleButton
 	},
 	props: ['initialText'],
 	data() {
@@ -109,7 +114,8 @@ export default {
 			selectedPlatforms: [],
 			releaseLabels: ["Released","Not Released","TBA"],
 			searchTitle: "",
-			selectedSort: ""
+			selectedSort: "",
+			followed: false,
 		}
 	},
 	methods: {
@@ -183,6 +189,7 @@ export default {
 						genres: this.selectedGenres.length > 0 ? this.selectedGenres : null,
 						platforms: this.selectedPlatforms.length > 0 ? this.selectedPlatforms : null,
 						name: this.searchTitle,
+						followed: this.followed && this.getUserProfile != null ? this.getUserProfile._id : null,
 						sort: this.selectedSort == "" ? null : this.selectedSort
 					}
 				})
@@ -227,7 +234,7 @@ export default {
             return getImg(url);
         }
 	},
-	computed: mapGetters(['platforms', 'genres', 'loadingMenu', 'games', 'loadedAll', 'loadingGames', 'totalGames']),
+	computed: mapGetters(['platforms', 'genres', 'loadingMenu', 'games', 'loadedAll', 'loadingGames', 'totalGames', 'getUserProfile']),
 	mounted() {   
 		if(this.initialText != null) {
 			this.searchTitle == this.initialText;

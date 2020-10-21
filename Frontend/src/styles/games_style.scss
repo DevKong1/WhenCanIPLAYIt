@@ -91,6 +91,11 @@
     }
 }
 
+.vue-js-switch {
+    margin-top: 11px;
+    margin-left: 15px;
+}
+
 .center-image {
     margin-top: -30%;
     height: auto !important;
@@ -320,6 +325,11 @@
             vertical-align: top;
             padding-top: 21px;
         }
+    }
+}
+@media screen and (max-width: 991px) {
+    .vue-js-switch {
+        margin-left: 7px !important;
     }
 }
 

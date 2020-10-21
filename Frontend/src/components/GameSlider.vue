@@ -8,8 +8,8 @@
           </div>
           <div :class="getReleaseBar(date.date)"></div>
       </div>
-      <div class="title-box">
-          <div class="main-title" @click="getGamePage(date.game._id)"> <a> {{ date.game.name }} </a> </div>
+      <div class="title-box" @click="getGamePage(date.game._id)">
+          <div class="main-title"> <a> {{ date.game.name }} </a> </div>
           <div class="sub-title"> <a> {{ date.platform.name }} </a> </div>
           <div class="sub-title"> <a> {{ date.human }} </a> </div>
       </div>
