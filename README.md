@@ -1,20 +1,29 @@
-# whencaniplayit
+# WhenCanIPLAYIt
 
-## Project setup
+## Deployment via Docker
+Navigate into /src 
+Assert the .env variable FRONTEND_URL in Apiservice is set to http://localhost:3030
+and execute 
 ```
-npm install
+docker build . -t app
 ```
-
-### Compiles and hot-reloads for development
+Run the container with
+```
+docker run -d -p 3030:3030 app
+```
+The application will start at http://localhost:3030
+## Deployment Npm
+Navigate into /src
+Assert the .env variable FRONTEND_URL in Apiservice is set to http://localhost:3030
+Start each Service from /Backend with
+```
+node ./index.js
+```
+Start the fronend with 
 ```
 npm run serve
 ```
+The application will start at http://localhost:8080
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-# WhenCanIPLAYIt
+## Media
+Any Media can be downloaded at https://drive.google.com/file/d/1M4xbcCWL8Vlh_xOkFDqjaGXH5fxdpQrp
