@@ -1,0 +1,60 @@
+#options {
+    margin-top: 80px;
+
+    .form-email {
+        padding-top: 20px;
+        display: flex;
+
+        .multiselect {
+            min-width: 80%;
+
+            .multiselect__tags {
+                background: #535459 !important;
+            }
+
+            .multiselect__content-wrapper {
+                width: 100%;
+                max-width: 100% !important;
+            }
+        }
+
+        button {
+            @include hoverTransition();
+            outline: none !important;
+            color: white;
+            width: 100%;
+            margin-left: 20px;    
+            background-color: #39A273;
+            font-weight: bold;
+            white-space: nowrap;
+            border-radius: 1px;
+            border: none;
+            box-shadow: 1px 1px 1px 1px white;
+
+            &:hover {
+                @include onHover();
+            }
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        #options {
+            margin-top: 110px !important;
+        }
+
+        .form-email {
+            flex-flow: wrap;
+        }
+
+        .multiselect {
+            min-width: 100% !important;
+        }
+
+        button {
+            width: 100%;    
+            margin-top: 20px;
+            height: 30px;
+            margin-left: 0 !important;
+        }
+    }
+}

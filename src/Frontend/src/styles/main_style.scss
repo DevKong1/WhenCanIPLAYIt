@@ -1,0 +1,19 @@
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #27282e;
+    background-repeat:repeat;
+    color: white;
+    min-height: 100vh;
+    display:flex; 
+    flex-direction:column; 
+
+    .h1 {
+        text-align: center;
+    }
+
+    .vm--modal {
+        background-color: #27282e;
+    }
+}
