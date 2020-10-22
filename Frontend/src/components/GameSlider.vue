@@ -53,7 +53,7 @@ export default {
         });
     },
     loadImage(url) {
-      return getImg(url);
+      return getImg(url, 'default_cover.jpg');
     }
   }
 }

@@ -6,7 +6,7 @@
     <div class="info-page container-fluid" v-else-if="this.getGame != null">      
         <div class="container row game-infos-box ">
             <div class="game-cover">
-                <img class="cover-img" :src="loadImage(this.getGame.cover)" />
+                <img class="cover-img" :src="loadCover(this.getGame.cover)" />
                 <div :class="getReleaseBar()"></div>
             </div>        
             <div class="game-infos-box-text">      
@@ -51,7 +51,7 @@
             <div class="col-6 carousel-box">
                 <carousel v-if="this.getGame.screenshots.length > 0" class="carousel" :perPage="1" :navigationEnabled="false" :autoplay="true" :loop="true">
                     <slide class="screenshot-box" v-for="ss in this.getGame.screenshots" :key="ss">   
-                        <img :src="loadImage(ss)" />
+                        <img :src="loadSS(ss)" />
                     </slide>
                 </carousel>
             </div> 
@@ -95,8 +95,11 @@ export default {
                 return 'game-row-bar purple-bar';
             }
         },
-        loadImage(url) {
-            return getImg(url);
+        loadCover(url) {
+            return getImg(url, 'default_cover.jpg');
+        },
+        loadSS(url) {
+            return getImg(url, 'default_ss.png');
         }
     },
     computed: mapGetters(['isLoadingGame', 'getGame']),

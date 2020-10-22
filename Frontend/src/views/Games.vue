@@ -231,7 +231,7 @@ export default {
 			});
 		},
         loadImage(url) {
-            return getImg(url);
+            return getImg(url, 'default_cover.jpg');
         }
 	},
 	computed: mapGetters(['platforms', 'genres', 'loadingMenu', 'games', 'loadedAll', 'loadingGames', 'totalGames', 'getUserProfile']),
