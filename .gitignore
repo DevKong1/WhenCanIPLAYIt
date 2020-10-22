@@ -1,10 +1,6 @@
 .DS_Store
 node_modules
-/Backend/IGDBService/node_modules
-/Backend/ApiService/node_modules
-/Frontend/node_modules
 /dist
-
 
 # local env files
 .env.local
@@ -19,13 +15,12 @@ pnpm-debug.log*
 # Editor directories and files
 .idea
 .vscode
+.vs
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-/Backend/IGDBService/public/cover
-/Backend/IGDBService/public/screenshots
-Backend/IGDBService/public/cover
-Backend/IGDBService/public/screenshots
+cover
+screenshots
