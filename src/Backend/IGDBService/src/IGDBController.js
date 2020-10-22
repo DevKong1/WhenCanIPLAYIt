@@ -6,7 +6,7 @@ const handler = require("./IDGBDataHandler.js");
 const downloader = require("./IGDBDataDownloader.js");
 
 async function checkAndUpdateDB (interval) {
-    //cron.schedule(interval, async function() {
+    cron.schedule(interval, async function() {
         let time = moment().subtract(7, "days").unix();
 
         await downloader.downloadAllData("https://api-v3.igdb.com/release_dates", 
@@ -17,7 +17,7 @@ async function checkAndUpdateDB (interval) {
             }),
             handler.handle_releasedatesJSON
         );
-    //});
+    });
 }
 
 exports.checkAndUpdateDB = checkAndUpdateDB;

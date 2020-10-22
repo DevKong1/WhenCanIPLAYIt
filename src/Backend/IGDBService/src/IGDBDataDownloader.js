@@ -1,13 +1,16 @@
 const puppeteer = require("puppeteer");
 const querystring = require("querystring");
-const fspath = require('fs-path');
 const fetch = require("node-fetch");
+const fs = require("fs");
+const mkdirp = require('mkdirp');
+const getDirName = require('path').dirname;
 const dotenv = require("dotenv").config();
 
 const proxyURL = "http://" + process.env.PROXY_HOST + ":" + process.env.PROXY_PORT + "/";
 var maxoffset = process.env.IGDB_MAX_OFFSET;
 var limit = process.env.IGDB_LIMIT;
 
+// Puppeteer downloader
 async function downloadAllData(url, data, handleDataCallback = null, callbackParam = null) {
     let parsed = querystring.parse(data);
     let basicQuery = parseQuery(parsed);
@@ -71,6 +74,7 @@ async function downloadAllData(url, data, handleDataCallback = null, callbackPar
     }
 };
 
+// Faster Downloader for images
 async function downloadImage(url, path, callback) {
     const fetch_retry = async (url, n = 5) => {
         try {
@@ -83,8 +87,10 @@ async function downloadImage(url, path, callback) {
     
 	const response = await fetch_retry(url);
     const buffer = await response.buffer();
-    
-	fspath.writeFile(path, buffer, callback);
+
+    await mkdirp(getDirName(path));
+    fs.writeFile(path, buffer, callback);
+
 }
 
 function parseQuery(parsed) {

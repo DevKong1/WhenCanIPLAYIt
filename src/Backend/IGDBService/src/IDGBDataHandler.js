@@ -169,7 +169,7 @@ async function addGames(release_dates, data) {
 			let path_base = "screenshots/" + saved_item.id + "/" + j + "." + extensionSS[extensionSS.length-1];
 			let pathSS = "public/" + path_base;
 			downloader.downloadImage("https:" + element_Screenshots[j], pathSS, (err) => {
-				if(err){
+				if(err) {
 					console.log("Error downloading: " + err);
 				}
 			});
