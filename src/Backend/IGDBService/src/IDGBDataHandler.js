@@ -41,7 +41,7 @@ async function addGames(release_dates, data) {
 	let coverSet = [...new Set(data.filter(el => el.cover != null && el.cover != undefined).map(el => el.cover))];
 	let covers = [];
 	if(coverSet.length > 0) {
-		covers = await getSpecificData("https://api-v3.igdb.com/covers", "fields url;", coverSet);
+		covers = await getSpecificData("https://api.igdb.com/v4/covers", "fields url;", coverSet);
 
 		if(covers == null || covers == undefined) {
 			console.log("Error downloading data.");
@@ -68,7 +68,7 @@ async function addGames(release_dates, data) {
 		if(genresSet.length != genres.length) {
 			let newGenres = genresSet.filter(el => !genres.map(el => el.code).includes(el.toString()));
 			console.log("Downloading new genres: " + newGenres);
-			let newGenresData = await getSpecificData("https://api-v3.igdb.com/genres", "fields name;", newGenres);
+			let newGenresData = await getSpecificData("https://api.igdb.com/v4/genres", "fields name;", newGenres);
 
 			for(i in newGenresData){
 				let saved = await saveToDB(Genres, {
@@ -95,7 +95,7 @@ async function addGames(release_dates, data) {
 		if(platformsSet.length != platforms.length) {
 			let newPlatforms = platformsSet.filter(el => !platforms.map(x => x.code).includes(el.toString()));
 			console.log("Downloading new platforms: " + newPlatforms);
-			let newPlatformsData = await getSpecificData("https://api-v3.igdb.com/platforms", "fields name;", newPlatforms);
+			let newPlatformsData = await getSpecificData("https://api.igdb.com/v4/platforms", "fields name;", newPlatforms);
 
 			for(i in newPlatformsData){
 				let saved = await saveToDB(Platforms, {
@@ -111,7 +111,7 @@ async function addGames(release_dates, data) {
 	let screenSet = [...new Set((data.filter(el => el.screenshots != undefined && el.screenshots.length > 0).map(el => el.screenshots)).flat(1))];
 	let screenshots = [];
 	if(screenSet.length > 0) {
-		screenshots = await getSpecificData("https://api-v3.igdb.com/screenshots", "fields url;", screenSet);
+		screenshots = await getSpecificData("https://api.igdb.com/v4/screenshots", "fields url;", screenSet);
 
 		if(screenshots == null || screenshots == undefined) {
 			console.log("Error downloading data.");
@@ -231,7 +231,7 @@ exports.handle_releasedatesJSON = async function(data) {
 				if(newGames.length > 0) {
 					//Download all games for which we have no data
 					console.log("Downloading new games:\n" + [...new Set(newGames.map(el => el.game))]);
-					await downloader.downloadAllData("https://api-v3.igdb.com/games", 
+					await downloader.downloadAllData("https://api.igdb.com/v4/games", 
 						querystring.stringify({
 							fields: "fields *;",
 							where: "where id = (" + [...new Set(newGames.map(el => el.game))] + ");",
@@ -277,7 +277,7 @@ exports.handle_releasedatesJSON = async function(data) {
 						
 						oldDates.forEach(async date => {
 							await Release_Dates.deleteOne({_id: date._id});
-							await Games.findByIdAndUpdate(thisGame.id, {
+							await Games.findOneAndUpdate({code: thisGame.id}, {
 								$pull: {
 									"release_dates": date._id
 								}

@@ -8,7 +8,7 @@ var port = process.env.PROXY_PORT || 3000;
 exports.startProxy = async function() {
     await cors_proxy.createServer({
         originWhitelist: [], // Allow all origins
-        setHeaders: {"user-key": process.env.IGDB_USER_KEY},
+        setHeaders: {"Client-ID": process.env.IGDB_Client, "Authorization": process.env.IGDB_Auth},
     }).listen(port, host, function() {
         console.log('Running CORS Anywhere on ' + host + ':' + port);
     });

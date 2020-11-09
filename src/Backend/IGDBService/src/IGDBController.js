@@ -9,7 +9,7 @@ async function checkAndUpdateDB (interval) {
     cron.schedule(interval, async function() {
         let time = moment().subtract(7, "days").unix();
 
-        await downloader.downloadAllData("https://api-v3.igdb.com/release_dates", 
+        await downloader.downloadAllData("https://api.igdb.com/v4/release_dates", 
             querystring.stringify({
                 fields: "fields *;",
                 where: "where date >= " + time + ";",
