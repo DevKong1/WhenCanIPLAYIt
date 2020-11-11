@@ -38,7 +38,7 @@
                 <div class="row game-rating" >
                     <span>Rating:</span>
                     <div class="rating-value">
-                        <a v-if="this.getGame.aggregated_rating != null">{{this.getGame.aggregated_rating}}</a>
+                        <a v-if="this.getGame.aggregated_rating != null">{{this.getGame.aggregated_rating.length > 5 ? this.getGame.aggregated_rating.substring(0,5) : this.getGame.aggregated_rating}}</a>
                         <a v-else>N/A</a>
                     </div>
                     <span>Votes:</span>
