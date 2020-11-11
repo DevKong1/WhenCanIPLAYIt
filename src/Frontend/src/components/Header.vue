@@ -4,7 +4,7 @@
             <router-link class="sidebar-option" to="/"><i class="fas fa-home"></i><a class="router-text">HOME</a></router-link>
             <router-link class="sidebar-option" to="/games"><i class="fas fa-gamepad"></i><a class="router-text">GAMES</a></router-link>
             <div v-if="this.getUserProfile != null" class="welcome-msg">
-                <img class="avatar" alt="Avatar" :src="this.getUserProfile.image">
+                <img class="avatar" alt="Avatar" :src="this.getUserProfile.image != null ? this.getUserProfile.image : 'https://i.stack.imgur.com/dr5qp.jpg'">
                 <a>Welcome, {{ this.getUserProfile.nickname }}!</a>
                 <div class="settings-i" @click="routeOptions">
                     <i class="fas fa-cog"></i>
